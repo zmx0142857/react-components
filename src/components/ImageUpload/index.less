@@ -1,0 +1,49 @@
+@image-size: 100px;
+.c-image-upload {
+    // 图片选择
+    // &-label {
+    //     margin-left: 24px;
+    // }
+    &-choose {
+        // padding: 0 24px;
+        transition: 0.3s;
+        display: flex;
+        flex: auto;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    &-wrap {
+        position: relative;
+        width: @image-size;
+        height: @image-size;
+        animation: slidein 0.3s ease-out;
+    }
+    .ant-image {
+        position: relative;
+        border-radius: 6px;
+        overflow: hidden;
+    }
+    &-add-btn.ant-btn-icon-only {
+        position: relative;
+        width: @image-size;
+        height: @image-size;
+        .anticon {
+            font-size: 32px;
+        }
+    }
+    &-close-btn.ant-btn-icon-only {
+        position: absolute;
+        top: -12px;
+        right: -12px;
+        z-index: 0;
+        padding: 0;
+        border: 0;
+        .anticon {
+            font-size: 32px;
+        }
+    }
+    @keyframes slidein {
+        from { width: 0; opacity: 0 }
+        to { width: @image-size; opacity: 1 }
+    }
+}

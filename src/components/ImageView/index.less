@@ -1,0 +1,23 @@
+.c-image-view {
+  position: relative;
+  overflow: hidden;
+  &, &-body, &-mask {
+    width: 100%;
+    height: 100%;
+  }
+  &-body {
+    position: absolute;
+    transform-origin: center center;
+    background-size: 100% 100%;
+  }
+  &-mask {
+    cursor: not-allowed;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+  &-item {
+    position: absolute;
+  }
+}
