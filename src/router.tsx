@@ -11,11 +11,6 @@ const EditFormExample = lazy(() => import('@/components/EditForm/example'))
 
 export const examples = [
   {
-    path: 'image-view',
-    title: 'ImageView',
-    element: <ImageViewExample />,
-  },
-  {
     path: 'cron',
     title: 'Cron',
     element: <CronExample />,
@@ -31,14 +26,19 @@ export const examples = [
     element: <DragWindowExample />,
   },
   {
+    path: 'edit-form',
+    title: 'EditForm',
+    element: <EditFormExample />,
+  },
+  {
     path: 'image-upload',
     title: 'ImageUpload',
     element: <ImageUploadExample />,
   },
   {
-    path: 'edit-form',
-    title: 'EditForm',
-    element: <EditFormExample />,
+    path: 'image-view',
+    title: 'ImageView',
+    element: <ImageViewExample />,
   },
 ]
 

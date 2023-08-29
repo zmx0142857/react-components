@@ -21,7 +21,7 @@ type ImageUploadProps = {
  */
 const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange }) => {
 
-  const fileRef = useRef(null);
+  const fileRef = useRef(null)
   const [fileList, setFileList] = useState(initialValue)
 
   useEffect(() => {
@@ -93,4 +93,4 @@ const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange 
   )
 }
 
-export default ImageUpload;
+export default ImageUpload

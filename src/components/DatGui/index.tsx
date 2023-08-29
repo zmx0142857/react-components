@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { Collapse } from 'antd';
-import componentDict from './componentDict';
-import './index.less';
+import { FC } from 'react'
+import { Collapse } from 'antd'
+import formItems from '../FormItems'
+import './index.less'
 
 type DatGuiItem = {
   name: string
@@ -27,24 +27,24 @@ type DatGuiProps = {
 const DatGui: FC<DatGuiProps> = ({ panels, items }) => {
 
   const handleProps = (item: DatGuiItem, props: any): FC | null => {
-    const V = componentDict[item.type];
+    const V = formItems[item.type]
     if (!V) {
       console.error('invalid component type', item.type)
       return null
     }
     // 某些 antd 组件使用的不是 value 字段而是 checked 字段, 这里作判断
     if (V.valuePropName && V.valuePropName !== 'value') {
-      props[V.valuePropName] = props.value;
-      delete props.value;
+      props[V.valuePropName] = props.value
+      delete props.value
     }
-    return V.component || null;
+    return V.component || null
   }
 
   const renderItem = (item: DatGuiItem) => {
-    if (!item) return null;
+    if (!item) return null
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { name, label, type, ...props } = item;
-    const Component = handleProps(item, props);
+    const { name, label, type, ...props } = item
+    const Component = handleProps(item, props)
     return Component && (
       <div className="c-datgui-item" key={name}>
         <span className="c-datgui-item-label">{label}</span>
@@ -54,10 +54,10 @@ const DatGui: FC<DatGuiProps> = ({ panels, items }) => {
   }
 
   const renderExtra = (item: DatGuiItem) => {
-    if (!item) return null;
+    if (!item) return null
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { name, label, type, ...props } = item;
-    const Component = handleProps(item, props);
+    const { name, label, type, ...props } = item
+    const Component = handleProps(item, props)
     return Component && <Component key={name} {...props} />
   }
 
@@ -76,4 +76,4 @@ const DatGui: FC<DatGuiProps> = ({ panels, items }) => {
   )
 }
 
-export default DatGui;
+export default DatGui

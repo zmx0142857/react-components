@@ -15,6 +15,7 @@ export const debounce = () => {
  * @param {number} value
  * @param {number} min
  * @param {number} max
+ * @returns {number}
  */
 export const between = (value: number, min: number, max: number): number => {
   return Math.max(Math.min(value, max), min)
@@ -23,6 +24,7 @@ export const between = (value: number, min: number, max: number): number => {
 /**
  * 载入图片
  * @param {string} src 图片地址
+ * @returns {Promise<HTMLImageElement>}
  */
 export const loadImage = (src: string): Promise<HTMLImageElement> => {
   const img = new window.Image()
@@ -38,6 +40,7 @@ export const loadImage = (src: string): Promise<HTMLImageElement> => {
  * 压缩图片, 返回 base64
  * @param {File} file 文件
  * @param {object} options 选项
+ * @returns {Promise<string>}
  */
 export const compressPicture = (file: File, { width = 0, height = 0, level = 0.8 } = {}): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -74,7 +77,7 @@ export const compressPicture = (file: File, { width = 0, height = 0, level = 0.8
  * @param {string} base64 
  * @returns {Blob}
  */
-export const base64ToBlob = (base64: string) => {
+export const base64ToBlob = (base64: string): Blob => {
   const arr = base64.split(',')
   const mime = arr[0].match(/:(.*?);/)?.[1]
   const bstr = window.atob(arr[1])
@@ -84,4 +87,28 @@ export const base64ToBlob = (base64: string) => {
     u8arr[n] = bstr.charCodeAt(n)
   }
   return new Blob([u8arr], { type: mime })
+}
+
+/**
+ * 解析 json，失败时返回默认值
+ * @param {string | undefined | null} str
+ * @returns {object}
+ */
+export const parseJson = (str: string | undefined | null, defaultValue = {}): object => {
+  if (!str) return defaultValue
+  try {
+    return JSON.parse(str)
+  } catch (err) {
+    return defaultValue
+  }
+}
+
+/**
+ * 从对象中过滤出满足函数条件的字段
+ * @param {object} obj 对象
+ * @param {Function} fn 函数
+ * @returns {object}
+ */
+export const pickBy = (obj: object, fn: (value: object, key: string) => boolean): object => {
+  return Object.fromEntries(Object.entries(obj).filter(v => fn(v[1], v[0])))
 }

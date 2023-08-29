@@ -1,7 +1,7 @@
 import type { FC } from 'react'
-import { Input, Select, InputNumber, Checkbox, Switch, Slider, Button, Typography } from 'antd'
+import { Input, Select, InputNumber, Checkbox, Switch, Slider, Button, Typography, Radio, DatePicker } from 'antd'
 
-const { Link } = Typography;
+const { Link } = Typography
 
 type ColorProps = {
   onChange?: (s: string) => void
@@ -18,18 +18,20 @@ const Color: FC<ColorProps> = (props) => {
   )
 }
 
-type ComponentDict = Record<string, { component: FC, valuePropName?: string }>
+type FormItems = Record<string, { component: FC, valuePropName?: string }>
 
-const componentDict: ComponentDict = {
+const formItems: FormItems = {
   Input: { component: Input },
   Select: { component: Select },
   InputNumber: { component: InputNumber },
   Switch: { component: Switch, valuePropName: 'checked' },
   Checkbox: { component: Checkbox, valuePropName: 'checked' },
+  Radio: { component: Radio.Group, valuePropName: 'checked' },
   Slider: { component: Slider },
   Color: { component: Color },
   Button: { component: Button },
   Link: { component: Link },
+  DatePicker: { component: DatePicker },
 }
 
-export default componentDict
+export default formItems

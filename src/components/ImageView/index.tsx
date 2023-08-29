@@ -53,16 +53,16 @@ const ImageView: FC<ImageViewProps> = ({ disabled = false, onClick, src, items, 
 
   // 使用原生方法以提高性能
   const setTransform = (params: { scale: number, x: number, y: number }) => {
-    const { scale, x, y } = params;
-    transform.current = params;
+    const { scale, x, y } = params
+    transform.current = params
     if (body.current) {
-      body.current.style.transform = `scale(${scale}) translate(${x}px, ${y}px)`;
+      body.current.style.transform = `scale(${scale}) translate(${x}px, ${y}px)`
     }
   }
 
   // 鼠标按下事件
   const onMouseDown = (e: MouseEvent) => {
-    if (disabled) return;
+    if (disabled) return
     mouse.current = {
       isClick: true,
       isDown: true,
@@ -120,8 +120,8 @@ const ImageView: FC<ImageViewProps> = ({ disabled = false, onClick, src, items, 
 
   // 滚动事件
   const onWheel = (e: WheelEvent) => {
-    const [boundX, boundY] = getBounds();
-    const { scale, x, y } = transform.current;
+    const [boundX, boundY] = getBounds()
+    const { scale, x, y } = transform.current
     const newScale = between(scale - e.deltaY * 0.001, minScale, maxScale)
     setTransform({
       scale: newScale,
@@ -172,8 +172,8 @@ const ImageView: FC<ImageViewProps> = ({ disabled = false, onClick, src, items, 
               ...style,
             }}
             onMouseUp={(e) => {
-              e.stopPropagation();
-              mouse.current.isDown = false;
+              e.stopPropagation()
+              mouse.current.isDown = false
             }}
           >{children}</div>
         )}
@@ -183,4 +183,4 @@ const ImageView: FC<ImageViewProps> = ({ disabled = false, onClick, src, items, 
   )
 }
 
-export default ImageView;
+export default ImageView
