@@ -1,41 +1,23 @@
 .c-datgui {
-    width: 300px;
-
-    &-item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        padding: 4px 0;
-
+  width: 300px;
+  &-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 4px 0;
+  }
+  .ant-collapse {
+    border: none;
+    &>.ant-collapse-item>.ant-collapse-header {
+      padding: 8px 12px;
     }
-
-    .ant-collapse {
-        border: none;
-        & > .ant-collapse-item > .ant-collapse-header {
-            padding: 8px 12px;
-        }
-        // &-header {
-        //     background-color: #1f1f1f;
-        // }
-        &-content,
-        &-content-box {
-            background-color: transparent;
-        }
+    &-content,
+    &-content-box {
+      background-color: transparent;
     }
-
-    .ant-slider {
-        width: 100%;
-        // &-rail, .ant-slider:hover .ant-slider-rail {
-        //     background-color: #666 !important;
-        // }
-    }
-
-    .ant-color {
-        padding: 0;
-        background: transparent;
-        border: none;
-        width: 44px;
-        cursor: pointer;
-    }
+  }
+  .ant-slider {
+    width: 100%;
+  }
 }

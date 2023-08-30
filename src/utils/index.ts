@@ -1,3 +1,5 @@
+import type { Any } from '../types'
+
 /**
  * 防抖
  */
@@ -111,4 +113,20 @@ export const parseJson = (str: string | undefined | null, defaultValue = {}): ob
  */
 export const pickBy = (obj: object, fn: (value: object, key: string) => boolean): object => {
   return Object.fromEntries(Object.entries(obj).filter(v => fn(v[1], v[0])))
+}
+
+export const sleep = (delay: number) => {
+  return new Promise(resolve => setTimeout(resolve, delay))
+}
+
+export const pagerApi = (dataSource: { [k in string]: Any }[], { labelKey = 'label', valueKey = 'value', delay = 10 } = {}) => {
+  const fetch = async ({ label = '', value = '', page = 1, size = 10 } = {}) => {
+    await sleep(delay)
+    const filteredList = value
+      ? dataSource.filter(v => { const a = v[valueKey]; return typeof a === 'string' && a.includes(value) })
+      : dataSource.filter(v => { const a = v[labelKey]; return typeof a === 'string' && a.includes(label.trim()) })
+    const data = filteredList.slice(size * (page - 1), size * page)
+    return { status: 0, data, total: filteredList.length }
+  }
+  return fetch
 }

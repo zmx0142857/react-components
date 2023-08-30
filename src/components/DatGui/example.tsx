@@ -95,14 +95,14 @@ const DatGuiExample = () => {
                 },
                 {
                     name: 'visibleColor',
-                    type: 'Color',
+                    type: 'ColorPicker',
                     label: '可见部分颜色',
                     value: visibleColor,
                     onChange: setVisibleColor,
                 },
                 {
                     name: 'invisibleColor',
-                    type: 'Color',
+                    type: 'ColorPicker',
                     label: '被遮挡部分颜色',
                     value: invisibleColor,
                     onChange: setInvisibleColor,

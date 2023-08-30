@@ -1,37 +1,45 @@
+/* eslint-disable react-refresh/only-export-components */
 import type { FC } from 'react'
-import { Input, Select, InputNumber, Checkbox, Switch, Slider, Button, Typography, Radio, DatePicker } from 'antd'
+import { Input, InputNumber, Checkbox, Switch, Slider, Button, Typography, Radio, DatePicker, TimePicker, Cascader, ColorPicker, TreeSelect } from 'antd'
+import ImageUpload from './ImageUpload'
+import SelectInput from './SelectInput'
 
 const { Link } = Typography
 
-type ColorProps = {
-  onChange?: (s: string) => void
-}
-
-const Color: FC<ColorProps> = (props) => {
-  return (
-    <Input
-      className="ant-color"
-      type="color"
-      {...props}
-      onChange={e => props.onChange?.(e.target.value)}
-    />
-  )
-}
+const DatePickerWrap: FC = (props) => <DatePicker {...props} />
+const DateRangePicker: FC = (props) => <DatePicker.RangePicker {...props} />
 
 type FormItems = Record<string, { component: FC, valuePropName?: string }>
 
 const formItems: FormItems = {
-  Input: { component: Input },
-  Select: { component: Select },
-  InputNumber: { component: InputNumber },
-  Switch: { component: Switch, valuePropName: 'checked' },
-  Checkbox: { component: Checkbox, valuePropName: 'checked' },
-  Radio: { component: Radio.Group, valuePropName: 'checked' },
-  Slider: { component: Slider },
-  Color: { component: Color },
+  // antd 组件
   Button: { component: Button },
+  Cascader: { component: Cascader },
+  Checkbox: { component: Checkbox.Group },
+  ColorPicker: { component: ColorPicker },
+  DatePicker: { component: DatePickerWrap },
+  DateRangePicker: { component: DateRangePicker },
+  Input: { component: Input },
+  InputNumber: { component: InputNumber },
   Link: { component: Link },
-  DatePicker: { component: DatePicker },
+  Password: { component: Input.Password },
+  TextArea: { component: Input.TextArea },
+  Radio: { component: Radio.Group },
+  Select: { component: SelectInput },
+  Slider: { component: Slider },
+  Switch: { component: Switch, valuePropName: 'checked' },
+  TimePicker: { component: TimePicker },
+  TimeRangePicker: { component: TimePicker.RangePicker },
+  TreeSelect: { component: TreeSelect },
+
+  // 自制组件
+  ImageUpload: { component: ImageUpload },
+  // Cron:
+  // ListSelect:
+  // Object:
+  // Transfer:
 }
+
+const TODO = '引入更多自制组件'
 
 export default formItems

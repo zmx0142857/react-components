@@ -1,11 +1,13 @@
-import { useRef } from 'react'
+import EditForm from '.'
 import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
-import EditForm from '.'
+import type { FormType } from '.'
+import { fetchGradeOptions, hometownOptions } from './example.config'
+import { useRef } from 'react'
 
 const EditFormExample = () => {
 
-  const form = useRef<any>()
+  const form = useRef<FormType>()
 
   const editForm = [
     {
@@ -19,7 +21,7 @@ const EditFormExample = () => {
       label: '性别',
       name: 'gender',
       type: 'Radio',
-      initialValue: 1, // FIXME: this default value doesn't work
+      initialValue: 1,
       options: [
         { value: 0, label: '女' },
         { value: 1, label: '男' },
@@ -31,24 +33,17 @@ const EditFormExample = () => {
       name: 'grade',
       type: 'Select',
       initialValue: 2,
-      options: [
-        { value: 1, label: '一年级' },
-        { value: 2, label: '二年级' },
-        { value: 3, label: '三年级' },
-        { value: 4, label: '四年级' },
-        { value: 5, label: '五年级' },
-        { value: 6, label: '六年级' },
-      ],
+      fetch: fetchGradeOptions,
     },
     {
       label: '出生日期',
       name: 'birthday',
       type: 'DatePicker',
+      showTime: true,
       initialValue: dayjs(),
-      // 修改出生日期, 年龄跟着改变
       onChange: (value: Dayjs) => {
         const age = dayjs().diff(value, 'y')
-        form.current?.setFieldValue('age', age)
+        form.current?.setFieldsValue({ age })
       },
     },
     {
@@ -56,13 +51,33 @@ const EditFormExample = () => {
       name: 'age',
       type: 'InputNumber',
       initialValue: 18,
+      tooltip: '修改出生日期, 年龄跟着改变',
     },
     {
       label: '已接种疫苗',
       name: 'isVaccinated',
       type: 'Switch',
       initialValue: true,
-    }
+    },
+    {
+      label: '爱好',
+      name: 'hobby',
+      type: 'Checkbox',
+      initialValue: [0, 1, 2],
+      options: [
+        { value: 0, label: '唱' },
+        { value: 1, label: '跳' },
+        { value: 2, label: 'Rap' },
+        { value: 3, label: '篮球' },
+      ],
+    },
+    {
+      label: '家乡',
+      name: 'hometown',
+      type: 'Cascader',
+      initialValue: ['350000', '350100', '350103'],
+      options: hometownOptions,
+    },
   ]
 
   const onFinish = (values: object) => {
@@ -71,10 +86,6 @@ const EditFormExample = () => {
 
   const onCancel = () => {
     console.log('onCancel')
-    // 参考 antd Form.useForm 的返回值, 可以调用的方法有:
-    // getFieldValue getFieldsValue getFieldError getFieldsError getFieldWarning
-    // isFieldsTouched isFieldTouched isFieldValidating isFieldsValidating resetFields
-    // setFields setFieldValue setFieldsValue validateFields submit
     form.current?.resetFields()
   }
 

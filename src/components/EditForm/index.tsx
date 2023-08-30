@@ -1,14 +1,17 @@
-import { Button, ButtonProps, Form } from 'antd'
-import formItems from '../FormItems'
-import { pickBy } from '@/utils'
-import { forwardRef, useImperativeHandle } from 'react'
 import './index.less'
+import formItems from '../FormItems'
+import type { ReactNode } from 'react'
+import { Any } from '@/types'
+import { Button, ButtonProps, Form } from 'antd'
+import { forwardRef, useImperativeHandle } from 'react'
+import { pickBy } from '@/utils'
 
 type ItemType = {
   type: string
   name: string
   label: string
-  initialValue?: undefined | null | number | string | object
+  tooltip?: ReactNode
+  initialValue?: Any
   required?: boolean
   itemProps?: object
 }
@@ -24,6 +27,8 @@ type EditFormProps = {
   onFinish?: (values: object) => void
   onCancel?: () => void
 }
+
+export type FormType = ReturnType<typeof Form.useForm>[0]
 
 /**
  * 编辑表单
@@ -45,7 +50,7 @@ const EditForm = forwardRef(({
   useImperativeHandle(ref, () => form)
 
   const renderItem = (item: ItemType) => {
-    const { type, name, label, required, initialValue, itemProps, ...props } = item
+    const { type, name, label, required, tooltip, initialValue, itemProps, ...props } = item
     const V = formItems[type]
     if (!V) {
       console.error('invalid component type', type)
@@ -58,6 +63,7 @@ const EditForm = forwardRef(({
         required={required}
         initialValue={initialValue}
         valuePropName={V.valuePropName}
+        tooltip={tooltip}
         {...itemProps}
       >
         <V.component {...props} />
@@ -71,7 +77,8 @@ const EditForm = forwardRef(({
   ]
   btns = btns || defaultBtn
 
-  const onFormFinish = (values: object) => {
+  const onFormFinish = async (values: object) => {
+    const TODO = 'validate required fields'
     return onFinish?.(pickBy(values, v => v !== undefined))
   }
 

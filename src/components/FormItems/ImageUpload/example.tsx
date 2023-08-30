@@ -8,7 +8,7 @@ const ImageUploadExample = () => {
         <ImageUpload />
       </Form.Item>
       <Form.Item>
-        <Button htmlType="submit">提交</Button>
+        <Button htmlType="submit" type="primary">提交</Button>
       </Form.Item>
     </Form>
   )
