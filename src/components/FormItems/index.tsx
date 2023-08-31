@@ -3,6 +3,7 @@ import type { FC } from 'react'
 import { Input, InputNumber, Checkbox, Switch, Slider, Button, Typography, Radio, DatePicker, TimePicker, Cascader, ColorPicker, TreeSelect } from 'antd'
 import ImageUpload from './ImageUpload'
 import SelectInput from './SelectInput'
+import ObjectInput from './ObjectInput'
 
 const { Link } = Typography
 
@@ -34,9 +35,9 @@ const formItems: FormItems = {
 
   // 自制组件
   ImageUpload: { component: ImageUpload },
+  Object: { component: ObjectInput },
   // Cron:
   // ListSelect:
-  // Object:
   // Transfer:
 }
 

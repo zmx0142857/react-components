@@ -33,7 +33,11 @@ const EditFormExample = () => {
       name: 'grade',
       type: 'Select',
       initialValue: 2,
+      allowClear: true,
       fetch: fetchGradeOptions,
+      rules: [
+        { required: true, message: '请选择年级' },
+      ],
     },
     {
       label: '出生日期',
@@ -78,6 +82,21 @@ const EditFormExample = () => {
       initialValue: ['350000', '350100', '350103'],
       options: hometownOptions,
     },
+    {
+      label: '照片',
+      name: 'photo',
+      type: 'ImageUpload',
+      initialValue: [],
+    },
+    {
+      label: '其他属性',
+      name: 'others',
+      type: 'Object',
+      keyPrompt: {
+        blood: { label: '血型', placeholder: 'A, B, AB 或 O' },
+        zodiac: { label: '星座', placeholder: '你懂的' },
+      },
+    }
   ]
 
   const onFinish = (values: object) => {

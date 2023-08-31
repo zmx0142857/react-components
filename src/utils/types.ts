@@ -9,5 +9,6 @@ export type FetchReturns = {
   status: number
   data: object[]
   total: number
+  desc?: string
 }
 export type FetchType = (props: FetchParams) => Promise<FetchReturns>

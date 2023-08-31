@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
-import type { FC } from 'react'
+import type { FC, HTMLInputTypeAttribute, MouseEvent } from 'react'
 import { Button, Image, message } from 'antd'
 import { compressPicture, base64ToBlob } from '@/utils'
 import { PlusOutlined, CloseCircleFilled } from '@ant-design/icons'
 import './index.less'
 
 type FileType = {
-  url: string
-  file: Blob
+  url: string // 用于回显 (base64)
+  file: Blob // 真正的图片文件
 }
 
 type ImageUploadProps = {

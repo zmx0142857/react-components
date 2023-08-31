@@ -4,7 +4,7 @@ import ImageUpload from '.'
 const ImageUploadExample = () => {
   return (
     <Form onFinish={console.log} style={{ padding: 24 }}>
-      <Form.Item label="选择图片" name="files" required>
+      <Form.Item label="选择图片" name="files" required rules={[{ required: true, message: '请选择图片' }]}>
         <ImageUpload />
       </Form.Item>
       <Form.Item>

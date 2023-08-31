@@ -1,15 +1,30 @@
-import type { Any } from '../types'
+import type { Any, FetchParams } from './types'
 
 /**
  * 防抖
  */
 export const debounce = () => {
   let timer: NodeJS.Timeout // ReturnType<typeof setTimeout>
-  const debounced = (fn: () => void, delay = 300) => {
+  const debounced = (fn: () => void, delay = 500) => {
     clearTimeout(timer)
     timer = setTimeout(fn, delay)
   }
   return debounced
+}
+
+/**
+ * 节流
+ */
+export const throttle = () => {
+  let timer: NodeJS.Timeout | null
+  const throttled = (fn: () => void, delay = 500) => {
+    if (timer) return
+    timer = setTimeout(() => {
+      timer = null
+    }, delay)
+    fn()
+  }
+  return throttled
 }
 
 /**
@@ -120,11 +135,11 @@ export const sleep = (delay: number) => {
 }
 
 export const pagerApi = (dataSource: { [k in string]: Any }[], { labelKey = 'label', valueKey = 'value', delay = 10 } = {}) => {
-  const fetch = async ({ label = '', value = '', page = 1, size = 10 } = {}) => {
+  const fetch = async ({ label = '', value = '', page = 1, size = 10 }: FetchParams = {}) => {
     await sleep(delay)
     const filteredList = value
-      ? dataSource.filter(v => { const a = v[valueKey]; return typeof a === 'string' && a.includes(value) })
-      : dataSource.filter(v => { const a = v[labelKey]; return typeof a === 'string' && a.includes(label.trim()) })
+      ? dataSource.filter(v => { const a = v[valueKey]; return a === value || typeof a === 'string' && a.includes(value) })
+      : dataSource.filter(v => { const a = v[labelKey]; return a === value || typeof a === 'string' && a.includes(label.trim()) })
     const data = filteredList.slice(size * (page - 1), size * page)
     return { status: 0, data, total: filteredList.length }
   }

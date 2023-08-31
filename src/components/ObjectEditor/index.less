@@ -1,0 +1,60 @@
+.c-object-editor {
+  position: relative;
+  padding-bottom: 48px;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+
+  &-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-entries {
+    height: 100%;
+    overflow-y: auto;
+
+    .ant-row + .ant-row {
+      margin-top: 6px;
+    }
+
+    .ant-col-2 {
+      text-align: center;
+      line-height: 32px;
+    }
+
+  }
+
+  &-delete-btn {
+    cursor: pointer;
+  }
+
+  &-select {
+    width: 100%;
+  }
+
+  &-add-btn {
+    display: block;
+    padding: 10px;
+    width: 200px;
+    margin: 10px auto;
+    border: 1px dashed #666;
+    border-radius: 4px;
+    transition: background .2s;
+    &:hover {
+      background: rgba(255, 255, 255, .1);
+    }
+  }
+    
+  &-btns {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    text-align: center;
+
+    .ant-btn+.ant-btn {
+      margin-left: 20px;
+    }
+  }
+}

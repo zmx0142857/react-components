@@ -9,48 +9,53 @@ const DatGuiExample = lazy(() => import('@/components/DatGui/example'))
 const DragWindowExample = lazy(() => import('@/components/DragWindow/example'))
 const ImageUploadExample = lazy(() => import('@/components/FormItems/ImageUpload/example'))
 const EditFormExample = lazy(() => import('@/components/EditForm/example'))
+const ObjectEditorExample = lazy(() => import('@/components/ObjectEditor/example'))
+const LogDataExample = lazy(() => import('@/components/LogData/example'))
 
 export const examples = [
   {
-    path: 'cron',
-    title: 'Cron',
+    path: 'Cron',
     element: <CronExample />,
   },
   {
-    path: 'dat-gui',
-    title: 'DatGui',
+    path: 'DatGui',
     element: <DatGuiExample />,
   },
   {
-    path: 'drag-window',
-    title: 'DragWindow',
+    path: 'DragWindow',
     element: <DragWindowExample />,
   },
   {
-    path: 'edit-form',
-    title: 'EditForm',
+    path: 'EditForm',
     element: <EditFormExample />,
   },
   {
-    path: 'image-upload',
-    title: 'ImageUpload',
+    path: 'ImageUpload',
     element: <ImageUploadExample />,
   },
   {
-    path: 'image-view',
-    title: 'ImageView',
+    path: 'ImageView',
     element: <ImageViewExample />,
   },
+  {
+    path: 'ObjectEditor',
+    element: <ObjectEditorExample />,
+  },
+  {
+    path: 'LogData',
+    element: <LogDataExample />,
+  }
 ]
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: '404 Not Found',
     children: [
       {
         path: '/',
-        element: <Navigate to="image-view" />,
+        element: <Navigate to="ImageView" />,
       },
       ...examples,
     ]

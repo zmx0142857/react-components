@@ -1,16 +1,16 @@
 import { FC, useMemo } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Select } from 'antd'
-import { examples } from '../../router'
+import { examples } from '@/utils/router'
 import './index.less'
 
-const options = examples.map(item => ({ value: item.path, label: item.title }))
+const options = examples.map(item => ({ value: item.path, label: item.path }))
 
 const App: FC = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const value = useMemo(() => {
-    return examples.find(v => v.path === location.pathname.slice(1))?.title || examples[0].title
+    return examples.find(v => v.path === location.pathname.slice(1))?.path || examples[0].path
   }, [location.pathname])
 
   return (

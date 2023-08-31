@@ -59,7 +59,7 @@ const gradeOptions = [
   { value: 5, label: '五年级' },
   { value: 6, label: '六年级' },
   { value: 7, label: '七年级' },
-  { value: 6, label: '八年级' },
+  { value: 8, label: '八年级' },
   { value: 9, label: '九年级' },
   { value: 10, label: '十年级' },
   { value: 11, label: '十一年级' },

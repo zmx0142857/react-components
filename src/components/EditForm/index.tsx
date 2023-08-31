@@ -1,7 +1,8 @@
 import './index.less'
 import formItems from '../FormItems'
 import type { ReactNode } from 'react'
-import { Any } from '@/types'
+import { Any } from '@/utils/types'
+import type { FormRule } from 'antd'
 import { Button, ButtonProps, Form } from 'antd'
 import { forwardRef, useImperativeHandle } from 'react'
 import { pickBy } from '@/utils'
@@ -11,6 +12,7 @@ type ItemType = {
   name: string
   label: string
   tooltip?: ReactNode
+  rules?: FormRule[]
   initialValue?: Any
   required?: boolean
   itemProps?: object
@@ -50,7 +52,7 @@ const EditForm = forwardRef(({
   useImperativeHandle(ref, () => form)
 
   const renderItem = (item: ItemType) => {
-    const { type, name, label, required, tooltip, initialValue, itemProps, ...props } = item
+    const { type, name, label, required, tooltip, rules, initialValue, itemProps, ...props } = item
     const V = formItems[type]
     if (!V) {
       console.error('invalid component type', type)
@@ -64,6 +66,7 @@ const EditForm = forwardRef(({
         initialValue={initialValue}
         valuePropName={V.valuePropName}
         tooltip={tooltip}
+        rules={required && !rules ? [{ required: true }] : rules}
         {...itemProps}
       >
         <V.component {...props} />
@@ -78,7 +81,6 @@ const EditForm = forwardRef(({
   btns = btns || defaultBtn
 
   const onFormFinish = async (values: object) => {
-    const TODO = 'validate required fields'
     return onFinish?.(pickBy(values, v => v !== undefined))
   }
 

@@ -1,0 +1,58 @@
+.c-log-data {
+  position: fixed;
+  top: 0;
+  left: 0;
+  &-btn, &-list {
+    z-index: 2147483647;
+  }
+
+  &-container {
+    position: relative;
+    width: 100vw;
+    // height: 80vh;
+    height: 200px;
+    background: #fff;
+    overflow: auto;
+  }
+  &-list {
+    position: absolute;
+    width: 100%;
+    // display: flex;
+    // flex-direction: column-reverse; // 最后的日志放在最上面
+
+    div+div {
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
+  &-item {
+    height: 24px;
+    overflow: auto;
+    word-break: break-all;
+
+    // 隐藏滚动条
+    -ms-overflow-style: none; 
+    overflow: -moz-scrollbars-none; 
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+    &::-webkit-scrollbar {
+      width: 0 !important;
+      height: 0 !important;
+    }
+  }
+
+  &-log {
+    color: #222;
+    background: #fff;
+  }
+
+  &-warn {
+    color: #a40;
+    background: #eea;
+  }
+
+  &-error {
+    color: #800;
+    background: #ecc;
+  }
+}
