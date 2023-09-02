@@ -102,7 +102,7 @@ const CronInput: FC<CronInputProps> = ({
         open={modal.show}
         onCancel={closeModal}
         width={660}
-        bodyStyle={{ height: 540, padding: 20 }}
+        // bodyStyle={{ height: 540, padding: 20 }}
         footer={null}
         getContainer={getContainer}
       >

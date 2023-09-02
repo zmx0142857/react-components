@@ -1,9 +1,5 @@
 @image-size: 100px;
 .c-image-upload {
-    // 图片选择
-    // &-label {
-    //     margin-left: 24px;
-    // }
     &-choose {
         // padding: 0 24px;
         transition: 0.3s;
@@ -14,9 +10,17 @@
     }
     &-wrap {
         position: relative;
-        width: @image-size;
         height: @image-size;
+        width: @image-size;
+        opacity: 1;
+        transition: width 0.3s ease-in, opacity 0.3s ease-in;
         animation: slidein 0.3s ease-out;
+    }
+    &-wrap.phantom {
+        position: relative;
+        height: @image-size;
+        width: 0;
+        opacity: 0;
     }
     .ant-image {
         position: relative;
@@ -35,6 +39,7 @@
         position: absolute;
         top: -12px;
         right: -12px;
+        transform: scale(0.8);
         z-index: 0;
         padding: 0;
         border: 0;
