@@ -5,10 +5,10 @@ export type FetchParams = {
   page?: number
   size?: number
 }
-export type FetchReturns = {
+export type FetchReturns<T = object> = {
   status: number
-  data: object[]
+  data: T[]
   total: number
   desc?: string
 }
-export type FetchType = (props: FetchParams) => Promise<FetchReturns>
+export type FetchType<T> = (props: FetchParams) => Promise<FetchReturns<T>>

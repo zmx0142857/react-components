@@ -2,7 +2,7 @@ import EditForm from '.'
 import dayjs from 'dayjs'
 import type { Dayjs } from 'dayjs'
 import type { FormType } from '.'
-import { fetchGradeOptions, hometownOptions } from './example.config'
+import { fetchEquipments, fetchGradeOptions, hometownOptions } from './example.config'
 import { useRef } from 'react'
 
 const EditFormExample = () => {
@@ -89,14 +89,37 @@ const EditFormExample = () => {
       initialValue: [],
     },
     {
+      label: '装备',
+      title: '装备', // 弹窗标题
+      name: 'equipment',
+      type: 'ListSelect',
+      initialValue: [2, 3, 5, 7, 11, 13, 17, 19].map(i => ({ value: i, label: '装备' + i })),
+      fetch: fetchEquipments,
+    },
+    {
       label: '其他属性',
+      title: '其他属性', // 弹窗标题
       name: 'others',
       type: 'Object',
       keyPrompt: {
         blood: { label: '血型', placeholder: 'A, B, AB 或 O' },
         zodiac: { label: '星座', placeholder: '你懂的' },
       },
-    }
+    },
+    {
+      label: '素数',
+      name: 'primes',
+      type: 'Transfer',
+      initialValue: [2, 3, 5, 7, 11, 13, 17, 19].map(i => ({ value: i, label: '装备' + i })),
+      fetch: fetchEquipments,
+      showSearch: true,
+    },
+    {
+      label: '计划',
+      name: 'cron',
+      type: 'Cron',
+      initialValue: '',
+    },
   ]
 
   const onFinish = (values: object) => {

@@ -1,29 +1,29 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { useState } from 'react'
 
-type ModalType = {
+type ModalType<T> = {
   show: boolean
   type: string
   title: string
-  data: object
+  data: T
 }
-interface ModalType1 extends ModalType {
+interface ModalType1<T> extends ModalType<T> {
   push: (values: object) => void
   reset: () => void
   hide: () => void
 }
-type ModalReturns = [ModalType1, Dispatch<SetStateAction<ModalType>>]
+type ModalReturns<T> = [ModalType1<T>, Dispatch<SetStateAction<ModalType<T>>>]
 
-const useModal = (data?: object): ModalReturns => {
+function useModal<T = object>(data: T = {} as T): ModalReturns<T> {
 
   const initValue = () => ({
     show: false,
     type: '',
     title: '',
-    data: data || {},
+    data,
   })
 
-  const [modal, setModal] = useState<ModalType>(initValue)
+  const [modal, setModal] = useState<ModalType<T>>(initValue)
 
   // 表单重置
   const reset = () => {

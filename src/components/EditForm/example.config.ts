@@ -67,3 +67,6 @@ const gradeOptions = [
 ]
 
 export const fetchGradeOptions = pagerApi(gradeOptions)
+
+const equipments = Array.from({ length: 100 }).map((_, i) => ({ value: i, label: '装备' + i }))
+export const fetchEquipments = pagerApi(equipments)

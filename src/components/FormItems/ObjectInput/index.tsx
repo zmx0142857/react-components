@@ -9,7 +9,7 @@ import { Modal, Descriptions, Button } from 'antd'
 import { useEffect } from 'react'
 
 type ObjectInputProps = {
-  label?: string
+  title?: string
   value?: object
   initialValue?: object
   onChange?: (value: object) => void
@@ -21,7 +21,7 @@ type ObjectInputProps = {
 }
 
 const ObjectInput: FC<ObjectInputProps> = ({
-  label,
+  title,
   value,
   initialValue,
   onChange,
@@ -44,7 +44,7 @@ const ObjectInput: FC<ObjectInputProps> = ({
   const onEdit = () => disabled ? null : setModal({
     show: true,
     type: 'objectEditor',
-    title: label || '',
+    title: title || '',
     data: modal.data,
   })
 
@@ -67,7 +67,7 @@ const ObjectInput: FC<ObjectInputProps> = ({
         ))}
         <Descriptions.Item>
           <Button
-            style={{ width: 32 }}
+            style={{ width: 32, height: 22 }}
             size="small"
             title="编辑"
             icon={<EditOutlined />}

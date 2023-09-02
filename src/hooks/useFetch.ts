@@ -19,7 +19,7 @@ type OptionsType = {
  * @param options.mapParams 参数映射
  * @param options.mapList 列表映射
  */
-export const useFetch = (api?: ApiType & IsFetch, { mapParams, mapList, debounce = 0 }: OptionsType = {}) => {
+const useFetch = (api?: ApiType & IsFetch, { mapParams, mapList, debounce = 0 }: OptionsType = {}) => {
   const [loading, setLoading] = useState(false)
   const timer = useRef<NodeJS.Timeout>()
 
@@ -68,3 +68,5 @@ export const useFetch = (api?: ApiType & IsFetch, { mapParams, mapList, debounce
   if (typeof api === 'function' && api.isFetch) return api
   return fetch
 }
+
+export default useFetch

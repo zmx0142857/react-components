@@ -2,33 +2,35 @@
   position: fixed;
   top: 0;
   left: 0;
-  &-btn, &-list {
+
+  &-btns, &-list {
     z-index: 2147483647;
+  }
+
+  &-btns {
+    display: inline-block;
   }
 
   &-container {
     position: relative;
     width: 100vw;
-    // height: 80vh;
-    height: 200px;
+    height: 50vh;
     background: #fff;
     overflow: auto;
   }
+
   &-list {
     position: absolute;
     width: 100%;
     // display: flex;
     // flex-direction: column-reverse; // 最后的日志放在最上面
-
-    div+div {
-      border-bottom: 1px solid #ccc;
-    }
   }
 
   &-item {
     height: 24px;
     overflow: auto;
     word-break: break-all;
+    border-bottom: 1px solid #ccc;
 
     // 隐藏滚动条
     -ms-overflow-style: none; 

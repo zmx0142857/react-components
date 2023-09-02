@@ -7,8 +7,10 @@ const LogDataExample = () => {
     fn(Math.random())
   }
   return <>
-    <LogData />
-    <button onClick={randomLog} style={{ position: 'absolute', top: 0, left: 108 }}>测试</button>
+    <LogData>
+      &nbsp;
+      <button onClick={randomLog}>测试</button>
+    </LogData>
   </>
 }
 

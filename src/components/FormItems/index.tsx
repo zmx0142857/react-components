@@ -4,6 +4,9 @@ import { Input, InputNumber, Checkbox, Switch, Slider, Button, Typography, Radio
 import ImageUpload from './ImageUpload'
 import SelectInput from './SelectInput'
 import ObjectInput from './ObjectInput'
+import ListSelect from './ListSelect'
+import TransferInput from './TransferInput'
+import CronInput from './CronInput'
 
 const { Link } = Typography
 
@@ -32,15 +35,14 @@ const formItems: FormItems = {
   TimePicker: { component: TimePicker },
   TimeRangePicker: { component: TimePicker.RangePicker },
   TreeSelect: { component: TreeSelect },
+  Transfer: { component: TransferInput },
+  // Upload: TODO
 
   // 自制组件
   ImageUpload: { component: ImageUpload },
   Object: { component: ObjectInput },
-  // Cron:
-  // ListSelect:
-  // Transfer:
+  ListSelect: { component: ListSelect },
+  Cron: { component: CronInput },
 }
-
-const TODO = '引入更多自制组件'
 
 export default formItems

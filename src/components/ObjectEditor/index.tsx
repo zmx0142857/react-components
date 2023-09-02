@@ -94,7 +94,7 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ value = {}, disabled = false, onF
       </div>
       {!disabled &&
         <div className="c-object-editor-btns">
-          <Button type="primary" onClick={finish}>提交</Button>
+          <Button type="primary" onClick={finish}>确定</Button>
           <Button onClick={onCancel}>取消</Button>
         </div>
       }

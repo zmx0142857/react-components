@@ -1,7 +1,7 @@
 import { useEffect, type FC } from 'react'
 import type { FetchType } from '@/utils/types'
 import { Divider, Pagination, Select, Space, Spin } from 'antd'
-import { usePager } from '@/hooks/usePager'
+import usePager from '@/hooks/usePager'
 
 type SelectInputProps = {
   fetch?: FetchType

@@ -1,5 +1,6 @@
 import './index.less'
 import type { Any } from '@/utils/types'
+import type { FC, ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
 type LogDataType = {
@@ -8,13 +9,17 @@ type LogDataType = {
   data: Any[]
 }
 
+type LogDataProps = {
+  children?: ReactNode
+  itemHeight?: number
+}
+
 const { log, warn, error } = console
-const itemHeight = 24
 
 /**
  * Debug console for mobile web -- with virtual scroll
  */
-const LogData = () => {
+const LogData: FC<LogDataProps> = ({ children, itemHeight = 24 }) => {
   const [show, setShow] = useState(false)
   const [logData, setLogData] = useState<LogDataType[]>([])
   const [range, setRange] = useState([0, 0])
@@ -45,19 +50,20 @@ const LogData = () => {
 
   useEffect(() => {
     if (show) {
-      toBottom()
+      toBottom(logData.length)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show])
+  }, [show, logData.length])
 
   const logMessage = (tag: string, id: number, ...args: object[]) => {
-    try {
-      logData.push({ tag, id, data: args.map(v => JSON.stringify(v)) })
-    } catch {
-      logData.push({ tag, id, data: args })
-    }
-    setLogData([...logData])
-    toBottom()
+    setLogData(logData => {
+      try {
+        logData.push({ tag, id, data: args.map(v => JSON.stringify(v)) })
+      } catch {
+        logData.push({ tag, id, data: args })
+      }
+      return [...logData]
+    })
   }
 
   const onScroll = () => {
@@ -68,21 +74,26 @@ const LogData = () => {
     setRange(range)
   }
 
-  const toBottom = () => {
+  const toBottom = (length: number) => {
     if (!container.current) return
     const height = container.current.offsetHeight
-    const range = [Math.max(0, logData.length - (height / itemHeight | 0)), logData.length]
+    const range = [Math.max(0, length - (height / itemHeight | 0)), length]
     setRange(range)
     setTimeout(() => {
       container.current?.scrollTo({
-        top: itemHeight * logData.length
+        top: itemHeight * length
       })
     }, 0)
   }
 
   return (
     <div className="c-log-data">
-      <button className="c-log-data-btn" onClick={() => setShow(v => !v)}>显示/隐藏日志</button>
+      <div className="c-log-data-btns">
+        <button className="c-log-data-btn" onClick={() => setShow(v => !v)}>显示/隐藏</button>
+        &nbsp;
+        <button className="c-log-data-btn" onClick={() => setLogData([])}>清空</button>
+        {children}
+      </div>
       {show && ( // virtual scroll
         <div ref={container} className="c-log-data-container" onScroll={onScroll}>
           <div className="c-log-data-list" style={{ top: itemHeight * range[0], paddingBottom: itemHeight * (logData.length - range[1]) }}>

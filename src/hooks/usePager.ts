@@ -1,6 +1,6 @@
 import type { FetchParams, FetchReturns } from '@/utils/types'
 import { useState } from 'react'
-import { useFetch } from './useFetch'
+import useFetch from './useFetch'
 
 type ApiType = (params: object) => Promise<FetchReturns>
 type OptionsType = {
@@ -10,13 +10,14 @@ type OptionsType = {
   page?: number
   size?: number
 }
-type PagerType = {
+type PagerType<T> = {
   search: string
   page: number
   size: number
   total: number
-  data: object[]
+  data: T[]
 }
+export type PagerReturns<T> = ReturnType<typeof usePager<T>>
 
 /**
  * 带状态的分页查询
@@ -24,9 +25,9 @@ type PagerType = {
  * @param mapParams 参数映射
  * @param mapList 列表映射
  */
-export function usePager(run?: ApiType, { page = 1, size = 10, mapParams, mapList, debounce = 0 }: OptionsType = {}) {
+function usePager<T = object>(run?: ApiType, { page = 1, size = 10, mapParams, mapList, debounce = 0 }: OptionsType = {}) {
 
-  const [pager, setPager] = useState<PagerType>({
+  const [pager, setPager] = useState<PagerType<T>>({
     search: '',
     page,
     size,
@@ -37,19 +38,19 @@ export function usePager(run?: ApiType, { page = 1, size = 10, mapParams, mapLis
   const fetch = useFetch(run, { mapParams, mapList, debounce })
 
   // 两次 setPager 将引起两次组件渲染
-  const list = async (params: FetchParams = {}) => {
+  const list = async ({ label = pager.search, page = pager.page, size = pager.size }: FetchParams = {}) => {
     setPager(pager => ({
       ...pager,
-      search: params.label ?? pager.search,
-      page: params.page ?? pager.page,
-      size: params.size ?? pager.size,
+      search: label,
+      page,
+      size,
     }))
-    const { status, data, total } = await fetch(params)
+    const { status, data, total } = await fetch({ label, page, size })
     if (status === 0) {
       setPager(pager => ({
         ...pager,
         total,
-        data,
+        data: data as T[],
       }))
     }
   }
@@ -60,3 +61,5 @@ export function usePager(run?: ApiType, { page = 1, size = 10, mapParams, mapLis
 
   return { ...pager, setPager, list, onChange, loading: fetch.loading };
 }
+
+export default usePager
