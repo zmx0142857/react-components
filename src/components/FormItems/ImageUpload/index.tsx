@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import type { FC, HTMLInputTypeAttribute, MouseEvent } from 'react'
+import type { ChangeEvent, FC } from 'react'
 import { Button, Image, message } from 'antd'
 import { compressPicture, base64ToBlob } from '@/utils'
 import { PlusOutlined, CloseCircleFilled } from '@ant-design/icons'
@@ -14,12 +14,13 @@ type ImageUploadProps = {
   initialValue?: FileType[]
   value?: FileType[]
   onChange?: (files: FileType[]) => void
+  capture?: boolean | 'user' | 'environment' // capture="user" // user: 前置摄像头, environment: 后置摄像头, undefined: 让用户选择
 }
 
 /**
  * 图片上传 (支持手机相机)
  */
-const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange }) => {
+const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange, capture }) => {
 
   const fileRef = useRef(null)
   const [fileList, setFileList] = useState(initialValue)
@@ -29,8 +30,8 @@ const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange 
   }, [value])
 
   // 添加图片
-  const onImageChange = async (event) => {
-    const files = event.target.files
+  const onImageChange = async (e: ChangeEvent) => {
+    const files = (e.target as HTMLInputElement).files
     if (!files || files.length === 0) return
     const file = files[0]
     try {
@@ -58,10 +59,10 @@ const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange 
       <input ref={fileRef}
         type="file"
         accept="image/*"
-        capture="camera"
+        capture={capture}
         style={{ display: 'none' }}
         onChange={onImageChange}
-        onClick={(e) => { e.target.value = '' }}
+        onClick={(e) => { (e.target as HTMLInputElement).value = '' }}
       />
 
       {/* 选择图片 */}
@@ -85,7 +86,7 @@ const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange 
         <Button
           className="c-image-upload-add-btn"
           type="dashed"
-          onClick={() => fileRef.current?.click()}
+          onClick={() => fileRef.current && (fileRef.current as HTMLInputElement).click()}
           icon={<PlusOutlined />}
         />
       </div>

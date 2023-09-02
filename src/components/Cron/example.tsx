@@ -3,7 +3,7 @@ import Cron, { type CronRef } from '.'
 import { Button } from 'antd'
 
 const CronExample = () => {
-  const cron = useRef<CronRef>()
+  const cron = useRef<CronRef>(null)
   return (
     <Cron
       ref={cron}

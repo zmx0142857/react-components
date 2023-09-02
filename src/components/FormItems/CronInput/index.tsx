@@ -37,7 +37,7 @@ const CronInput: FC<CronInputProps> = ({
   getContainer,
   postProcess, // 对生成的 cron 表达式进行后处理
 }) => {
-  const cron = useRef<CronRef>()
+  const cron = useRef<CronRef>(null)
   const [modal, setModal] = useModal({ value: initialValue })
 
   useEffect(() => {

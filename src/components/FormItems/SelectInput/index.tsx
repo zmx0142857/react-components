@@ -22,7 +22,7 @@ const SelectInput: FC<SelectInputProps> = ({ fetch, ...props }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const TODO = '在输入框中输入一些文本后, 点击页面空白处, 输入框被清空, 也会触发 onSearch. 如何避免这个不必要的请求?'
+  // TODO: '在输入框中输入一些文本后, 点击页面空白处, 输入框被清空, 也会触发 onSearch. 如何避免这个不必要的请求?'
   const onSearch = (label: string) => {
     if (fetch) {
       pager.list({ label })

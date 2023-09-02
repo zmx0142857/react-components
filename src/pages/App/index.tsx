@@ -18,7 +18,7 @@ const App: FC = () => {
       <div className="p-app-header">
         <Select
           value={value}
-          onChange={navigate}
+          onChange={value => navigate(value)}
           options={options}
           showSearch
         />

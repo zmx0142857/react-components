@@ -11,4 +11,4 @@ export type FetchReturns<T = object> = {
   total: number
   desc?: string
 }
-export type FetchType<T> = (props: FetchParams) => Promise<FetchReturns<T>>
+export type FetchType<T = object> = (props: FetchParams) => Promise<FetchReturns<T>>

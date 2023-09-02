@@ -1,7 +1,7 @@
 import './index.less'
 import CronContext from './CronContext'
 import Panes from './Panes'
-import type { FC, ReactNode } from 'react'
+import type { ForwardRefExoticComponent, ReactNode } from 'react'
 import { Tabs, Divider } from 'antd'
 import { forwardRef, useImperativeHandle, useState, useEffect, useRef } from 'react'
 import useLanguage from './useLanguage'
@@ -19,11 +19,7 @@ export type CronRef = {
   getDesc: () => string
 }
 
-interface CronComponentType extends FC<CronProps> {
-  Provider: typeof CronContext.Provider
-}
-
-const Cron: FC<CronProps> = forwardRef(({ style, value = '', footer, tabs = {}, defaultTab = 'second' }, ref) => {
+const Cron = forwardRef<CronRef, CronProps>(({ style, value = '', footer, tabs = {}, defaultTab = 'second' }, ref) => {
   const language = useLanguage(['tabs', 'every', 'assign', 'none', 'dash', 'slash', 'harsh', 'last', 'weekdays'])
   const parser = useRef(new Parser())
   const [currentTab, setCurrentTab] = useState(defaultTab)
@@ -85,6 +81,10 @@ const Cron: FC<CronProps> = forwardRef(({ style, value = '', footer, tabs = {}, 
     </div>
   )
 })
+
+interface CronComponentType extends ForwardRefExoticComponent<CronProps> {
+  Provider: typeof CronContext.Provider
+}
 
 ;(Cron as CronComponentType).Provider = CronContext.Provider
 
