@@ -5,6 +5,7 @@ import { Button, Input, Modal, Tooltip } from 'antd'
 import Cron, { type CronRef } from '@/components/Cron'
 import classnames from 'classnames'
 import { Keys } from '@/components/Cron/parser'
+import { FieldTimeOutlined } from '@ant-design/icons'
 
 type CronInputProps = {
   title?: string
@@ -92,6 +93,7 @@ const CronInput: FC<CronInputProps> = ({
             title: '编辑' + title,
             data: modal.data,
           })}
+          suffix={<FieldTimeOutlined style={{ opacity: 0.25 }} />}
         />
       </Tooltip>
       <Modal
