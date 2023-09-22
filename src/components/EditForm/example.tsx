@@ -118,7 +118,7 @@ const EditFormExample = () => {
       label: '计划',
       name: 'cron',
       type: 'Cron',
-      initialValue: '',
+      initialValue: '* * * 1 * ?',
     },
   ]
 

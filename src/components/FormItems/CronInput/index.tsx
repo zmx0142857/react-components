@@ -54,23 +54,23 @@ const CronInput: FC<CronInputProps> = ({
   }
 
   // 修正非法表达式
-  const handleIlleagalCron = (value: string) => {
-    const arr = value.split(' ')
-    if (arr.length === 7) {
-      arr.forEach((item, i) => {
-        // '?' 只能在日和周中使用, 如果在其它字段出现, 就改成 '*'
-        if (item === '?' && [0, 1, 2, 4].includes(i)) {
-          arr[i] = '*'
-        }
-      })
-    }
-    return arr.join(' ')
-  }
+  // const handleIlleagalCron = (value: string) => {
+  //   const arr = value.split(' ')
+  //   if (arr.length === 7) {
+  //     arr.forEach((item, i) => {
+  //       // '?' 只能在日和周中使用, 如果在其它字段出现, 就改成 '*'
+  //       if (item === '?' && [0, 1, 2, 4].includes(i)) {
+  //         arr[i] = '*'
+  //       }
+  //     })
+  //   }
+  //   return arr.join(' ')
+  // }
 
   const onOk = () => {
     let value = cron.current?.getValue() || ''
     closeModal()
-    value = handleIlleagalCron(value)
+    // value = handleIlleagalCron(value)
     if (postProcess) {
       value = postProcess(value)
     }
@@ -105,6 +105,7 @@ const CronInput: FC<CronInputProps> = ({
         // bodyStyle={{ height: 540, padding: 20 }}
         footer={null}
         getContainer={getContainer}
+        destroyOnClose
       >
         {modal.show &&
           <Cron

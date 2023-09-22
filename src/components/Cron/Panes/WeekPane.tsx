@@ -1,82 +1,74 @@
-import { useRef, useState, useEffect, useCallback } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { Radio, Checkbox, InputNumber } from 'antd'
 import WeekSelect from './WeekSelect'
 import useLanguage from '../useLanguage'
 import { PaneProps } from './Pane'
 import { RadioChangeEvent } from 'antd/lib'
-import { FieldType, WeekParser, cronRegex } from '../parser'
+import { type CronField, FieldType, WeekParser, cronRegex } from '../parser'
 import { CheckboxValueType } from 'antd/es/checkbox/Group'
 
 function WeekPane({ value, onChange, Parser }: PaneProps) {
   const language = useLanguage(['assign', 'none', 'every', 'dash', 'harsh', 'last', 'weekdays'])
   const parser = useRef(new Parser() as WeekParser)
-  const isFirstRender = useRef(true)
-  const [data, setData] = useState(() => parser.current.default())
+  const [data, setData] = useState<Required<CronField>>(() => parser.current.fromString(value))
 
   useEffect(() => {
     setData(parser.current.fromString(value))
   }, [value])
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+  const triggerChange = (changeData: Partial<CronField>) => {
+    const newData = {
+      ...data,
+      ...changeData
     }
-    const str = parser.current.toString(data)
+    setData(newData)
+    const str = parser.current.toString(newData)
     if (str) {
       onChange(str)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }
 
-  const onChangeType = useCallback((e: RadioChangeEvent) => {
-    setData(data => ({
-      ...data,
+  const onChangeType = (e: RadioChangeEvent) => {
+    triggerChange({
       type: e.target.value
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeDash0 = useCallback((v: string | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeDash0 = (v: string | null) => {
+    triggerChange({
       dash: [v ?? parser.current.default().dash[0], data.dash[1]],
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeDash1 = useCallback((v: string | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeDash1 = (v: string | null) => {
+    triggerChange({
       dash: [data.dash[0], v ?? parser.current.default().dash[1]],
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeHarsh0 = useCallback((v: string | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeHarsh0 = (v: string | null) => {
+    triggerChange({
       harsh: [v ?? parser.current.default().harsh[0], data.harsh[1]],
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeHarsh1 = useCallback((v: number | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeHarsh1 = (v: number | null) => {
+    triggerChange({
       harsh: [data.harsh[0], v ?? parser.current.default().harsh[1]],
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeLast = useCallback((v: string | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeLast = (v: string | null) => {
+    triggerChange({
       last: v ?? parser.current.default().last
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeAssign = useCallback((v: CheckboxValueType[]) => {
-    setData(data => ({
-      ...data,
+  const onChangeAssign = (v: CheckboxValueType[]) => {
+    triggerChange({
       assign: v.length !== 0 ? v.map(x => String(x)) : parser.current.default().assign
-    }))
-  }, [])
+    })
+  }
 
   const renderDash = () => {
     const key = 'week'

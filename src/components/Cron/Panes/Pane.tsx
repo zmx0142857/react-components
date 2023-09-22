@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Radio, Checkbox, Row, Col, InputNumber, RadioChangeEvent } from 'antd'
 import useLanguage from '../useLanguage'
 import type { CheckboxValueType } from 'antd/es/checkbox/Group'
@@ -13,66 +13,59 @@ export type PaneProps = {
 function Pane ({ value, onChange, Parser }: PaneProps) {
   const language = useLanguage(['every', 'assign', 'none', 'dash', 'slash'])
   const parser = useRef(new Parser())
-  const [data, setData] = useState<CronField>(() => parser.current.default())
-  const isFirstRender = useRef(true)
+  const [data, setData] = useState<CronField>(() => parser.current.fromString(value))
 
   useEffect(() => {
     setData(parser.current.fromString(value))
   }, [value])
 
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false
-      return
+  const triggerChange = (changeData: Partial<CronField>) => {
+    const newData = {
+      ...data,
+      ...changeData
     }
-    const str = parser.current.toString(data)
+    setData(newData)
+    const str = parser.current.toString(newData)
     if (str) {
       onChange(str)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }
 
-  const onChangeType = useCallback((e: RadioChangeEvent) => {
-    setData(data => ({
-      ...data,
+  const onChangeType = (e: RadioChangeEvent) => {
+    triggerChange({
       type: e.target.value
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeDash0 = useCallback((v: number | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeDash0 = (v: number | null) => {
+    triggerChange({
       dash: [v ?? parser.current.default().dash[0], data.dash[1]]
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeDash1 = useCallback((v: number | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeDash1 = (v: number | null) => {
+    triggerChange({
       dash: [data.dash[0], v ?? parser.current.default().dash[1]]
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeSlash0 = useCallback((v: number | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeSlash0 = (v: number | null) => {
+    triggerChange({
       slash: [v ?? parser.current.default().slash[0], data.slash[1]]
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeSlash1 = useCallback((v: number | null) => {
-    setData(data => ({
-      ...data,
+  const onChangeSlash1 = (v: number | null) => {
+    triggerChange({
       slash: [data.slash[0], v ?? parser.current.default().slash[1]]
-    }))
-  }, [])
+    })
+  }
 
-  const onChangeAssign = useCallback((v: CheckboxValueType[]) => {
-    setData(data => ({
-      ...data,
+  const onChangeAssign = (v: CheckboxValueType[]) => {
+    triggerChange({
       assign: v.length !== 0 ? v.map(x => String(x)) : parser.current.default().assign
-    }))
-  }, [])
+    })
+  }
 
   const renderDash = () => {
     const key = parser.current.key
