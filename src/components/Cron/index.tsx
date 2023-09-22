@@ -1,22 +1,42 @@
 import './index.less'
 import CronContext from './CronContext'
 import Panes from './Panes'
-import type { ForwardRefExoticComponent, ReactNode } from 'react'
+import type { ForwardRefExoticComponent, ReactNode, RefAttributes } from 'react'
 import { Tabs, Divider } from 'antd'
 import { forwardRef, useImperativeHandle, useState, useEffect, useRef } from 'react'
 import useLanguage from './useLanguage'
 import { CronData, CronField, Keys, keys, Parser } from './parser'
+import { defaultContext } from './config'
 
+type TabsType = { [k in Keys]?: boolean }
+type DescOptionType = {
+  language?: typeof defaultContext.language,
+  tabs?: TabsType
+}
 type CronProps = {
   style?: object
   value?: string
   footer?: ReactNode
-  tabs?: { [k in Keys]?: boolean }
+  tabs?: TabsType
   defaultTab?: Keys
 }
 export type CronRef = {
   getValue: () => string
   getDesc: () => string
+}
+interface CronComponentType extends ForwardRefExoticComponent<CronProps & RefAttributes<CronRef>> {
+  Provider: typeof CronContext.Provider
+  getDesc: (value: string, options: DescOptionType) => string
+}
+
+function cronData2Desc (cronData: CronData, { language = defaultContext.language, tabs = {} }: DescOptionType = {}) {
+  const arr = keys.map(key => {
+    const parser = new Panes[key].Parser()
+    const data = parser.fromString(cronData[key])
+    return parser.toDesc(data as Required<CronField>, language)
+  })
+  if (tabs.year === false) arr.pop()
+  return arr.filter(Boolean).join('; ')
 }
 
 const Cron = forwardRef<CronRef, CronProps>(({ style, value = '', footer, tabs = {}, defaultTab = 'second' }, ref) => {
@@ -34,13 +54,7 @@ const Cron = forwardRef<CronRef, CronProps>(({ style, value = '', footer, tabs =
     },
     // 获取当前的 cron 表达式文字描述
     getDesc: () => {
-      const arr = keys.map(key => {
-        const parser = new Panes[key].Parser()
-        const data = parser.fromString(cronData[key])
-        return parser.toDesc(data as Required<CronField>, language)
-      })
-      if (tabs.year === false) arr.pop()
-      return arr.filter(Boolean).join('; ')
+      return cronData2Desc(cronData, { language, tabs })
     },
   }))
 
@@ -80,12 +94,16 @@ const Cron = forwardRef<CronRef, CronProps>(({ style, value = '', footer, tabs =
       </>}
     </div>
   )
+}) as CronComponentType
+
+Object.assign(Cron, {
+  Provider: CronContext.Provider,
+  getDesc: (value: string, options: DescOptionType) => {
+    if (!value) return ''
+    const parser = new Parser()
+    const cronData = parser.cron(value)
+    return cronData2Desc(cronData, options)
+  }
 })
-
-interface CronComponentType extends ForwardRefExoticComponent<CronProps> {
-  Provider: typeof CronContext.Provider
-}
-
-;(Cron as CronComponentType).Provider = CronContext.Provider
 
 export default Cron

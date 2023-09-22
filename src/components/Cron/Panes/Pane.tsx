@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { Radio, Checkbox, Row, Col, InputNumber, RadioChangeEvent } from 'antd'
 import useLanguage from '../useLanguage'
 import type { CheckboxValueType } from 'antd/es/checkbox/Group'
-import { type CronField, FieldType, Parser, cronRegex } from '../parser'
+import { type CronField, FieldType, Parser, cronRegex, Keys } from '../parser'
 
 export type PaneProps = {
   value: string
@@ -156,9 +156,12 @@ function Pane ({ value, onChange, Parser }: PaneProps) {
       <Radio value={FieldType.every}>
         {language.every[parser.current.key]}
       </Radio>
-      <Radio value={FieldType.none}>
-        {language.none}
-      </Radio>
+      {/* 仅日和周可以「不指定」 */}
+      {[Keys.day, Keys.week].includes(parser.current.key) &&
+        <Radio value={FieldType.none}>
+          {language.none}
+        </Radio>
+      }
       <Radio value={FieldType.dash}>
         {renderDash()}
       </Radio>
