@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import DatGui from '.';
+import { DatGui } from '@/components';
 import { debounce } from '@/utils';
 
 const debounced = debounce();

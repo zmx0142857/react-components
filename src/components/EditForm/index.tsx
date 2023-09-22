@@ -30,7 +30,7 @@ type EditFormProps = {
   onCancel?: () => void
 }
 
-export type FormType = ReturnType<typeof Form.useForm>[0]
+export type EditFormRef = ReturnType<typeof Form.useForm>[0]
 
 /**
  * 编辑表单

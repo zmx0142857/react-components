@@ -1,5 +1,6 @@
 import type { FC } from 'react'
-import ImageView from '@/components/ImageView'
+import { ImageView }from '@/components'
+import flandre from '../../assets/flandre-scarlet.jpg'
 import { Tag } from 'antd'
 
 const points = [
@@ -12,7 +13,7 @@ const points = [
 const ImageViewExample: FC = () => {
   return (
     <ImageView
-      src="/flandre-scarlet.jpg"
+      src={flandre}
       items={points.map((item, index) => ({
           key: index,
           x: item.x,

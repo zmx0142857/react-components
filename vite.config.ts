@@ -17,4 +17,23 @@ export default defineConfig({
       },
     },
   },
+  // 库模式 https://cn.vitejs.dev/guide/build.html#library-mode
+  build: {
+    lib: {
+      entry: {
+        main: path.resolve(__dirname, 'src/components/index.ts'),
+        hooks: path.resolve(__dirname, 'src/hooks/index.ts'),
+      },
+      name: 'ReactComponents',
+      fileName: 'main',
+    },
+    rollupOptions: {
+      external: ['react', 'antd'],
+      output: {
+        globals: {
+          react: 'React',
+        }
+      }
+    },
+  }
 })

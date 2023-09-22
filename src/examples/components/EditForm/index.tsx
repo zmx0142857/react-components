@@ -1,13 +1,11 @@
-import EditForm from '.'
-import dayjs from 'dayjs'
-import type { Dayjs } from 'dayjs'
-import type { FormType } from '.'
-import { fetchEquipments, fetchGradeOptions, hometownOptions } from './example.config'
+import { EditForm, type EditFormRef } from '@/components'
+import dayjs, { type Dayjs } from 'dayjs'
+import { fetchEquipments, fetchGradeOptions, hometownOptions } from './config'
 import { useRef } from 'react'
 
 const EditFormExample = () => {
 
-  const form = useRef<FormType>()
+  const form = useRef<EditFormRef>()
 
   const editForm = [
     {

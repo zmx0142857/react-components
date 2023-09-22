@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Select } from 'antd'
-import { examples } from '@/utils/router'
-import './index.less'
+import examples from './components'
+import './app.less'
 
 const options = examples.map(item => ({ value: item.path, label: item.path }))
 

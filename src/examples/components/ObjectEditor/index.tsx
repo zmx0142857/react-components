@@ -1,4 +1,4 @@
-import ObjectEditor from '.'
+import { ObjectEditor } from '@/components'
 
 const ObjectEditorExample = () => {
 

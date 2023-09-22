@@ -1,5 +1,5 @@
 import { useRef } from 'react'
-import Cron, { type CronRef } from '.'
+import { Cron, type CronRef } from '@/components'
 import { Button } from 'antd'
 
 const CronExample = () => {

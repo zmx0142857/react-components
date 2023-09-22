@@ -1,6 +1,6 @@
-import DragWindow from '@/components/DragWindow'
+import { DragWindow } from '@/components'
 import { useRef, useState } from 'react'
-import './example.less'
+import './index.less'
 
 const DragWindowExample = () => {
   const container = useRef<HTMLDivElement>(null)

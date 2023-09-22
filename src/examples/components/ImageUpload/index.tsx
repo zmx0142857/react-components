@@ -1,5 +1,5 @@
 import { Button, Form } from 'antd'
-import ImageUpload from '.'
+import { ImageUpload } from '@/components'
 
 const ImageUploadExample = () => {
   return (

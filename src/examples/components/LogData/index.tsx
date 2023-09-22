@@ -1,4 +1,4 @@
-import LogData from '.'
+import { LogData } from '@/components'
 
 const LogDataExample = () => {
   const randomLog = () => {
