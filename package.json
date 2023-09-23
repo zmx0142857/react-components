@@ -1,10 +1,19 @@
 {
-  "name": "react-components",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@zmx0142857/react-components",
+  "version": "0.0.2",
   "type": "module",
+  "description": "A few useful react components.",
+  "author": "zmx0142857",
+  "license": "MIT",
+  "homepage": "https://github.com/zmx0142857/react-components",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zmx0142857/react-components.git"
+  },
+  "bugs": "https://github.com/zmx0142857/react-components/issues",
+  "keywords": ["react", "component"],
   "files": [
-    "dist"
+    "lib"
   ],
   "main": "./lib/main.js",
   "module": "./lib/main.js",
