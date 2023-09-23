@@ -1,3 +1,4 @@
 import { theme } from 'antd'
 
-export const algorithm = window.matchMedia('(prefers-color-scheme: dark)')?.matches ? theme.darkAlgorithm : theme.defaultAlgorithm
+type Algorithm = typeof theme.defaultAlgorithm
+export const algorithm: Algorithm = window.matchMedia('(prefers-color-scheme: dark)')?.matches ? theme.darkAlgorithm : theme.defaultAlgorithm

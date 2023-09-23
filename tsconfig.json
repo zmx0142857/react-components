@@ -11,8 +11,13 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
+
+    /* generate dts */
+    "noEmit": true,
+    // "emitDeclarationOnly": true,
+    // "declaration": true,
+    // "declarationDir": "dist",
 
     /* Linting */
     "strict": true,

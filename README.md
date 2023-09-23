@@ -8,3 +8,9 @@
 - ImageView: 可拖动的图片容器
 - ObjectEditor: JavaScript 对象编辑器
 - LogData: 虚拟滚动的日志列表组件, 可用于移动端调试
+
+## Scripts
+
+- `pnpm dev`: 启动开发服务器
+- `pnpm build`: 编译示例网站页面, 输出到 `dist/`
+- `pnpm build:lib`: 编译组件库, 输出到 `lib/`

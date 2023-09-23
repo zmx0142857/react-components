@@ -1,8 +1,11 @@
 import { Navigate, createBrowserRouter } from 'react-router-dom'
 import examples from './components'
-import App from './app'
+import { lazy } from 'react'
 
-const router = createBrowserRouter([
+const App = lazy(() => import('./app'))
+
+type Router = ReturnType<typeof createBrowserRouter>
+const router: Router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
