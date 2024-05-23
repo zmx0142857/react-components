@@ -2,10 +2,21 @@ import { useMemo, useState } from 'react'
 import type { FC } from 'react'
 import { Button, Col, Empty, Input, Row, Select } from 'antd'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import ObjectInput from '../FormItems/ObjectInput'
+import { matchString, parseJson } from '@/utils'
 import './index.less'
 
 export type KeyPrompt = {
-  [k in string]: { label: string, placeholder?: string }
+  [k in string]: {
+    label: string,
+    placeholder?: string,
+    component?: string,
+    options?: { value: string, label: string }[],
+    keyPrompt?: KeyPrompt,
+    disabled?: boolean,
+    column?: number,
+    type?: (v: string) => object,
+  }
 }
 
 type ObjectEditorProps = {
@@ -43,10 +54,15 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ value = {}, disabled = false, onF
   }
 
   const finish = () => {
-    onFinish?.(Object.fromEntries(entries))
+    const res = entries.map(([key, value]) => {
+      const config = keyPrompt[key] || {}
+      const type = config.type
+      return type ? [key, type(value)] : [key, value]
+    })
+    onFinish?.(Object.fromEntries(res))
   }
 
-  const onInput = (value: string, index: number, type: number) => {
+  function onInput<T>(value: T, index: number, type: number) {
     const newMapList = [...entries]
     newMapList[index][type] = value
     setEntries(newMapList)
@@ -55,31 +71,52 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ value = {}, disabled = false, onF
   return (
     <div className="c-object-editor">
       <div className="c-object-editor-entries">
-        {entries.map(([key, value], index) => (
-          <Row key={index}>
+        {entries.map(([key, value], index) => {
+          const config = keyPrompt[key] || {}
+          return <Row key={index}>
             <Col span={2}>键:</Col>
             <Col span={9}>
               <Select
                 className="c-object-editor-select"
                 mode="tags"
-                value={key ? key.split(/\s/) : []}
+                value={key ? [key] : []}
                 onChange={value => onInput(value.slice(-1)[0], index, 0)}
                 options={keyPromptOptions}
-                disabled={disabled}
+                disabled={disabled || config.disabled}
+                filterOption={(value, option) => matchString(option?.label, value) || matchString(option?.value, value)}
               />
             </Col>
             <Col span={2}>值:</Col>
             <Col span={9}>
-              <Input
-                // placeholder="如: 待完成"
-                value={String(value)}
-                onChange={e => onInput(e.target.value, index, 1)}
-                disabled={disabled}
-                placeholder={keyPrompt[key]?.placeholder}
-              />
+              {config.component === 'Object' ?
+                <ObjectInput
+                  value={typeof value === 'string' ? parseJson(value) : value || {}}
+                  onChange={value => onInput(value, index, 1)}
+                  keyPrompt={config.keyPrompt}
+                  disabled={disabled || config.disabled}
+                  title={config.label}
+                  column={config.column || 1}
+                />
+                : config.component === 'Select' ?
+                <Select
+                  className="c-object-editor-select"
+                  placeholder={config.placeholder}
+                  allowClear
+                  value={value || undefined}
+                  onChange={value => onInput(value, index, 1)}
+                  options={config.options}
+                  disabled={disabled || config.disabled}
+                />
+                : <Input
+                  value={String(value)}
+                  onChange={e => onInput(e.target.value, index, 1)}
+                  disabled={disabled || config.disabled}
+                  placeholder={config.placeholder}
+                />
+              }
             </Col>
             <Col span={2}>
-              {!disabled &&
+              {!(disabled || config.disabled) &&
                 <MinusCircleOutlined className="c-object-editor-delete-btn"
                   onClick={() => delRow(index)}
                   role="button"
@@ -88,7 +125,7 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ value = {}, disabled = false, onF
               }
             </Col>
           </Row>
-        ))}
+        })}
         {!disabled && <PlusOutlined className="c-object-editor-add-btn" onClick={addRow} />}
         {!entries.length && <Empty />}
       </div>

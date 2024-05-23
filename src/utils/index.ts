@@ -148,3 +148,10 @@ export const pagerApi = (name: string, dataSource: { [k in string]: Any }[], { l
   }
   return fetch
 }
+
+export const matchString = (a = '', b = '', { ignoreCase = true } = {}) => {
+  if (ignoreCase) {
+    return String(a).toLowerCase().includes(String(b).toLowerCase())
+  }
+  return a.includes(b)
+}

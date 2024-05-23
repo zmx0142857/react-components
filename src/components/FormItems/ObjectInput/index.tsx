@@ -6,7 +6,7 @@ import type { FC } from 'react'
 import useModal from '@/hooks/useModal'
 import { EditOutlined } from '@ant-design/icons'
 import { Modal, Descriptions, Button } from 'antd'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
 type ObjectInputProps = {
   title?: string
@@ -33,6 +33,7 @@ const ObjectInput: FC<ObjectInputProps> = ({
   ...otherProps
 }) => {
   const [modal, setModal] = useModal(initialValue)
+  const lastData = useRef({});
 
   useEffect(() => {
     if (value) {
@@ -41,12 +42,16 @@ const ObjectInput: FC<ObjectInputProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value])
 
-  const onEdit = () => disabled ? null : setModal({
-    show: true,
-    type: 'objectEditor',
-    title: title || '',
-    data: modal.data,
-  })
+  const onEdit = () => {
+    if (disabled) return
+    lastData.current = modal.data
+    setModal({
+      show: true,
+      type: 'objectEditor',
+      title: title || '',
+      data: modal.data,
+    })
+  }
 
   const onFinish = (data: object) => {
     setModal(({
@@ -57,12 +62,37 @@ const ObjectInput: FC<ObjectInputProps> = ({
     onChange?.(data)
   }
 
+  const onCancel = () => {
+    setModal({
+      show: false,
+      type: '',
+      title: '',
+      data: lastData.current,
+    })
+    onChange?.(lastData.current)
+  }
+
+  const renderValue = (key: string, value: string) => {
+    const config = keyPrompt[key] || {}
+    const res = String(value)
+    if (config.component === 'Select') {
+      if (config.options) {
+        return config.options.find(v => v.value === value)?.label || res
+      }
+    } else if (config.component === 'Object') {
+      if (typeof value === 'object' && res === '[object Object]') {
+        return JSON.stringify(value)
+      }
+    }
+    return res
+  }
+
   return (
     <div className={classNames('c-object-input', className)} style={style}>
       <Descriptions column={column}>
         {Object.entries(modal.data).map(([key, value]) => (
           <Descriptions.Item key={key} label={keyPrompt[key]?.label ?? key}>
-            {value}
+            {renderValue(key, value)}
           </Descriptions.Item>
         ))}
         <Descriptions.Item>
@@ -78,16 +108,17 @@ const ObjectInput: FC<ObjectInputProps> = ({
       </Descriptions>
       <Modal title={modal.title}
         open={modal.show}
-        onCancel={modal.hide}
+        onCancel={onCancel}
         width={600}
         bodyStyle={{ height: 400 }}
         footer={null}
+        destroyOnClose
       >
         {modal.show &&
           <ObjectEditor
             value={modal.data}
             onFinish={onFinish}
-            onCancel={modal.hide}
+            onCancel={onCancel}
             keyPrompt={keyPrompt}
             {...otherProps}
           />
