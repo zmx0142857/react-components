@@ -17,7 +17,7 @@ const SelectInput: FC<SelectInputProps> = ({ fetch, ...props }) => {
   useEffect(() => {
     if (fetch) {
       // 组件首次加载时, 用 value 请求一次接口, 用于回显 label. 后续请求 (onSearch) 都是用 label 而不是 value
-      pager.list({ value: props.value })
+      pager.onSearch({ value: props.value })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -25,7 +25,7 @@ const SelectInput: FC<SelectInputProps> = ({ fetch, ...props }) => {
   // TODO: '在输入框中输入一些文本后, 点击页面空白处, 输入框被清空, 也会触发 onSearch. 如何避免这个不必要的请求?'
   const onSearch = (label: string) => {
     if (fetch) {
-      pager.list({ label })
+      pager.onSearch({ label })
     }
   }
 

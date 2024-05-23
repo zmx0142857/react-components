@@ -5,6 +5,7 @@ import { useCallback, useRef, useState } from 'react'
 type IsFetch = {
   isFetch?: boolean
   loading?: boolean
+  cancel?: () => void
 }
 type ApiType = (params: object) => Promise<FetchReturns>
 type OptionsType = {
@@ -22,10 +23,11 @@ type OptionsType = {
 const useFetch = (api?: ApiType & IsFetch, { mapParams, mapList, debounce = 0 }: OptionsType = {}) => {
   const [loading, setLoading] = useState(false)
   const timer = useRef<NodeJS.Timeout>()
+  const count = useRef(0)
 
   const run = async (params: FetchParams, defaultValue: FetchReturns) => {
     try {
-      if (!api) throw new Error('api is undefined')
+      if (!api) throw new Error('useFetch: api is undefined')
       params = mapParams ? mapParams(params) : params
       return api(params)
     } catch (err) {
@@ -45,6 +47,8 @@ const useFetch = (api?: ApiType & IsFetch, { mapParams, mapList, debounce = 0 }:
 
   const fetch: FetchType & IsFetch = useCallback(async (params: FetchParams) => {
     let res: FetchReturns = { status: -1, data: [], total: 0, desc: '网络异常' }
+
+    const requestId = count.current
     setLoading(true)
     // 以 value 进行搜索时不必 debounce
     if (debounce && !params.value) {
@@ -53,6 +57,11 @@ const useFetch = (api?: ApiType & IsFetch, { mapParams, mapList, debounce = 0 }:
       res = await run(params, res)
     }
     setLoading(false)
+    // 若请求返回前调用 cancel(), 则 count 计数改变，丢弃请求结果
+    if (requestId !== count.current) {
+      throw new Error('request canceled')
+    }
+
     if (res.status === 0) {
       res.data = mapList ? res.data.map(mapList) : res.data
       return res
@@ -64,6 +73,9 @@ const useFetch = (api?: ApiType & IsFetch, { mapParams, mapList, debounce = 0 }:
   }, [loading])
   fetch.isFetch = true
   fetch.loading = loading
+  fetch.cancel = () => {
+    ++count.current
+  }
 
   if (typeof api === 'function' && api.isFetch) return api
   return fetch

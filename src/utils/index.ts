@@ -134,14 +134,17 @@ export const sleep = (delay: number) => {
   return new Promise(resolve => setTimeout(resolve, delay))
 }
 
-export const pagerApi = (dataSource: { [k in string]: Any }[], { labelKey = 'label', valueKey = 'value', delay = 10 } = {}) => {
-  const fetch = async ({ label = '', value = '', page = 1, size = 10 }: FetchParams = {}) => {
+export const pagerApi = (name: string, dataSource: { [k in string]: Any }[], { labelKey = 'label', valueKey = 'value', delay = 10 } = {}) => {
+  const fetch = async (params: FetchParams = {}) => {
+    const { label = '', value = '', page = 1, size = 10 } = params
     await sleep(delay)
     const filteredList = value
       ? dataSource.filter(v => { const a = v[valueKey]; return a === value || typeof a === 'string' && a.includes(value) })
       : dataSource.filter(v => { const a = v[labelKey]; return a === value || typeof a === 'string' && a.includes(label.trim()) })
     const data = filteredList.slice(size * (page - 1), size * page)
-    return { status: 0, data, total: filteredList.length }
+    const res = { status: 0, data, total: filteredList.length }
+    console.log('[pagerApi]', name, params, res)
+    return res
   }
   return fetch
 }

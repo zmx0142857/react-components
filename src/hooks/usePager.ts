@@ -11,11 +11,15 @@ type OptionsType = {
   size?: number
 }
 type PagerType<T> = {
-  search: string
   page: number
   size: number
   total: number
   data: T[]
+}
+type PagerParams = {
+  search?: object
+  page?: number
+  size?: number
 }
 export type PagerReturns<T> = ReturnType<typeof usePager<T>>
 
@@ -26,9 +30,8 @@ export type PagerReturns<T> = ReturnType<typeof usePager<T>>
  * @param mapList 列表映射
  */
 function usePager<T = object>(run?: ApiType, { page = 1, size = 10, mapParams, mapList, debounce = 0 }: OptionsType = {}) {
-
+  const [searchData, setSearchData] = useState({})
   const [pager, setPager] = useState<PagerType<T>>({
-    search: '',
     page,
     size,
     total: 0,
@@ -38,14 +41,14 @@ function usePager<T = object>(run?: ApiType, { page = 1, size = 10, mapParams, m
   const fetch = useFetch(run, { mapParams, mapList, debounce })
 
   // 两次 setPager 将引起两次组件渲染
-  const list = async ({ label = pager.search, page = pager.page, size = pager.size }: FetchParams = {}) => {
+  const list = async ({ search = searchData, page = pager.page, size = pager.size }: PagerParams = {}) => {
+    setSearchData(search)
     setPager(pager => ({
       ...pager,
-      search: label,
       page,
       size,
     }))
-    const { status, data, total } = await fetch({ label, page, size })
+    const { status, data, total } = await fetch({ ...search, page, size })
     if (status === 0) {
       setPager(pager => ({
         ...pager,
@@ -55,11 +58,38 @@ function usePager<T = object>(run?: ApiType, { page = 1, size = 10, mapParams, m
     }
   }
 
+  // 下面几个函数都是 list 的简写
+
+  // 翻页
   const onChange = (page: number, size: number) => {
     list({ page, size })
   }
 
-  return { ...pager, setPager, list, onChange, loading: fetch.loading };
+  // 搜索
+  const onSearch = (search: object) => {
+    list({ search, page: 1 })
+  }
+
+  // 删除后刷新
+  const onDelete = () => {
+    if (pager.page > 1 && pager.data.length === 1) {
+      list({ page: pager.page - 1 })
+    } else {
+      list()
+    }
+  }
+
+  return {
+    ...pager,
+    setPager,
+    searchData,
+    list,
+    onChange,
+    onSearch,
+    onDelete,
+    loading: fetch.loading,
+    cancel: fetch.cancel,
+  }
 }
 
 export default usePager

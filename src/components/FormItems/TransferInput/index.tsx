@@ -60,7 +60,7 @@ const TransferInput: FC<TransferInputProps> = ({
       // debounce
       clearTimeout(timer)
       timer = setTimeout(() => {
-        pager.list({ label: value })
+        pager.onSearch({ label: value })
       }, 300)
     }
   }

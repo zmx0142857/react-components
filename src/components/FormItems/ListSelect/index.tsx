@@ -143,7 +143,7 @@ const ListSelect: FC<ListSelectType> = ({
       >
         {modal.show && <>
           <div className="c-list-select-header">
-            <Input.Search placeholder={'搜索' + title} onSearch={keyword => pager.list({ label: keyword })} />
+            <Input.Search placeholder={'搜索' + title} onSearch={keyword => pager.onSearch({ label: keyword })} />
             {pager.data.length ?
               <div className="ant-list-item">
                 <Checkbox
