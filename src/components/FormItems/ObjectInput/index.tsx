@@ -18,6 +18,7 @@ type ObjectInputProps = {
   keyPrompt?: KeyPrompt
   column?: number
   disabled?: boolean
+  isArray?: boolean
 }
 
 const ObjectInput: FC<ObjectInputProps> = ({
@@ -30,6 +31,7 @@ const ObjectInput: FC<ObjectInputProps> = ({
   keyPrompt = {},
   column = 3,
   disabled,
+  isArray = false,
   ...otherProps
 }) => {
   const [modal, setModal] = useModal(initialValue)
@@ -72,8 +74,13 @@ const ObjectInput: FC<ObjectInputProps> = ({
     onChange?.(lastData.current)
   }
 
+  const getConfig = (key: string | number) => {
+    if (isArray) key = 0
+    return keyPrompt[key] || {}
+  }
+
   const renderValue = (key: string, value: string) => {
-    const config = keyPrompt[key] || {}
+    const config = getConfig(key)
     const res = String(value)
     if (config.component === 'Select') {
       if (config.options) {
@@ -120,6 +127,7 @@ const ObjectInput: FC<ObjectInputProps> = ({
             onFinish={onFinish}
             onCancel={onCancel}
             keyPrompt={keyPrompt}
+            isArray={isArray}
             {...otherProps}
           />
         }

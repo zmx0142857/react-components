@@ -126,7 +126,7 @@ export const parseJson = (str: string | undefined | null, defaultValue = {}): ob
  * @param {Function} fn 函数
  * @returns {object}
  */
-export const pickBy = (obj: object, fn: (value: object, key: string) => boolean): object => {
+export const filter = (obj: object, fn: (value: object, key: string) => boolean): object => {
   return Object.fromEntries(Object.entries(obj).filter(v => fn(v[1], v[0])))
 }
 

@@ -5,7 +5,7 @@ import { Any } from '@/utils/types'
 import type { FormRule } from 'antd'
 import { Button, ButtonProps, Form } from 'antd'
 import { forwardRef, useImperativeHandle } from 'react'
-import { pickBy } from '@/utils'
+import { filter } from '@/utils'
 
 type ItemType = {
   type: string
@@ -81,7 +81,7 @@ const EditForm = forwardRef(({
   btns = btns || defaultBtn
 
   const onFormFinish = async (values: object) => {
-    return onFinish?.(pickBy(values, v => v !== undefined))
+    return onFinish?.(filter(values, v => v !== undefined))
   }
 
   return (

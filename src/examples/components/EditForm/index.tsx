@@ -99,30 +99,7 @@ const EditFormExample = () => {
       title: '其他属性', // 弹窗标题
       name: 'others',
       type: 'Object',
-      keyPrompt: {
-        sign: { label: '个性签名', placeholder: '你懂的' },
-        blood: {
-          label: '血型',
-          component: 'Select',
-          placeholder: 'A, B, AB 或 O',
-          options: [
-            { value: 'A', label: 'A型' },
-            { value: 'B', label: 'B型' },
-            { value: 'O', label: 'O型' },
-            { value: 'AB', label: 'AB型' },
-          ],
-        },
-        coord: {
-          label: '经纬度',
-          component: 'Object',
-          type: JSON.stringify,
-          placeholder: '请输入经纬度',
-          keyPrompt: {
-            lon: { label: '经度', type: Number },
-            lat: { label: '纬度', type: Number },
-          },
-        },
-      },
+      initialValue: { a: 1, b: 2 },
     },
     {
       label: '素数',
