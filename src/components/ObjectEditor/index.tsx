@@ -21,6 +21,7 @@ export type KeyPrompt = {
 }
 
 type ObjectEditorProps = {
+  title?: string
   value?: object
   disabled?: boolean
   onFinish?: (params: object) => void
@@ -39,7 +40,7 @@ type ObjectEditorProps = {
  * @param props.keyPrompt 用于提示, { key: { label: '', placeholder: '' } }
  * @param props.isArray 数组模式
  */
-const ObjectEditor: FC<ObjectEditorProps> = ({ value = {}, disabled = false, onFinish, onCancel, keyPrompt = {}, isArray = false }) => {
+const ObjectEditor: FC<ObjectEditorProps> = ({ title = '', value = {}, disabled = false, onFinish, onCancel, keyPrompt = {}, isArray = false }) => {
   const keyPromptOptions = useMemo(() => {
     return Object.keys(keyPrompt).map(value => ({
       value,
@@ -106,7 +107,7 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ value = {}, disabled = false, onF
                   onChange={value => onInput(value, index, 1)}
                   keyPrompt={config.keyPrompt}
                   disabled={disabled || config.disabled}
-                  title={config.label}
+                  title={isArray ? `${title || '数组元素'}[${index}]`  : config.label}
                   column={config.column || 1}
                   {...filter(config, (_, key) => !['label', 'column', 'keyPrompt', 'disabled', 'placeholder', 'component', 'options', 'type'].includes(key))}
                 />

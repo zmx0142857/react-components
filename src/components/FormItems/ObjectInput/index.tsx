@@ -128,6 +128,7 @@ const ObjectInput: FC<ObjectInputProps> = ({
             onCancel={onCancel}
             keyPrompt={keyPrompt}
             isArray={isArray}
+            title={modal.title}
             {...otherProps}
           />
         }
