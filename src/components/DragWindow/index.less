@@ -1,7 +1,10 @@
 .c-drag-window {
+    --bg1: rgba(20, 20, 20, 0.7);
+    --bg2: #1f1f1f;
+    --bd1: #aaa;
     position: absolute;
-    background-color: rgba(20, 20, 20, 0.7);
-    border: 1px solid #aaa;
+    background-color: var(--bg1);
+    border: 1px solid var(--bd1);
     min-width: max-content;
     min-height: max-content;
     &-header {
@@ -9,10 +12,10 @@
         justify-content: space-between;
         align-items: center;
         padding: 8px 20px;
-        border-bottom: 1px solid #aaa;
+        border-bottom: 1px solid var(--bd1);
         cursor: move;
         user-select: none;
-        background-color: #1f1f1f;
+        background-color: var(--bg2);
     }
     // &-body {
     //     padding: 10px 20px;
@@ -20,4 +23,12 @@
     &-close {
         cursor: pointer;
     }
+}
+
+@media (prefers-color-scheme: light) {
+  .c-drag-window {
+    --bg1: rgba(255, 255, 255, 0.7);
+    --bg2: #fff;
+    --bd1: #d9d9d9;
+  }
 }

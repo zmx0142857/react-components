@@ -76,6 +76,10 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ title = '', value = {}, disabled 
   }
 
   function onInput<T>(value: T, index: number, type: number) {
+    if (type === 0) {
+      const config = getConfig(value as string)
+      if (config.disabled) return
+    }
     const newMapList = [...entries]
     newMapList[index][type] = value
     setEntries(newMapList)
