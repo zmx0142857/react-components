@@ -14,6 +14,7 @@ export type KeyPrompt = {
     options?: { value: string, label: string }[],
     keyPrompt?: KeyPrompt,
     disabled?: boolean,
+    hidden?: boolean,
     column?: number,
     type?: (v: string) => number | string | object,
     isArray?: boolean,
@@ -42,9 +43,10 @@ type ObjectEditorProps = {
  */
 const ObjectEditor: FC<ObjectEditorProps> = ({ title = '', value = {}, disabled = false, onFinish, onCancel, keyPrompt = {}, isArray = false }) => {
   const keyPromptOptions = useMemo(() => {
-    return Object.keys(keyPrompt).map(value => ({
+    return Object.entries(keyPrompt).filter(([, config]) => !config.hidden).map(([value, config]) => ({
       value,
-      label: keyPrompt[value].label,
+      label: config.label,
+      disabled: config.disabled,
     }))
   }, [keyPrompt])
   const [entries, setEntries] = useState(() => Object.entries(value))
@@ -63,7 +65,7 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ title = '', value = {}, disabled 
   }
 
   const finish = () => {
-    const res = entries.map(([key, value]) => {
+    const res = entries.filter(([key]) => !!key).map(([key, value]) => {
       const config = getConfig(key)
       const type = config.type
       return type ? [key, type(value)] : [key, value]
@@ -84,6 +86,7 @@ const ObjectEditor: FC<ObjectEditorProps> = ({ title = '', value = {}, disabled 
       <div className="c-object-editor-entries">
         {entries.map(([key, value], index) => {
           const config = getConfig(key)
+          if (config.hidden) return null
           return <Row key={index} justify="center">
             {isArray ? null : <>
               <Col span={2}>键:</Col>

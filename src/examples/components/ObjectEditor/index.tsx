@@ -56,11 +56,24 @@ const ObjectEditorExample = () => {
         { value: 1, label: '是' },
       ],
     },
+    disabledField: {
+      label: '你选不了我',
+      component: 'Input',
+      placeholder: '我被禁用了',
+      disabled: true,
+    },
+    hiddenField: {
+      label: '你看不见我',
+      component: 'Input',
+      placeholder: '我被隐藏了',
+      hidden: true,
+    },
   }
 
   return (
     <div style={{ padding: 24, width: '100%', height: '100%', boxSizing: 'border-box' }}>
       <ObjectEditor
+        value={{ hiddenField: '隐藏字段', disabledField: '禁用字段' }}
         keyPrompt={keyPrompt}
         onFinish={onFinish}
         onCancel={onCancel}

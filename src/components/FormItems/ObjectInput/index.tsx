@@ -97,11 +97,12 @@ const ObjectInput: FC<ObjectInputProps> = ({
   return (
     <div className={classNames('c-object-input', className)} style={style}>
       <Descriptions column={column}>
-        {Object.entries(modal.data).map(([key, value]) => (
-          <Descriptions.Item key={key} label={keyPrompt[key]?.label ?? key}>
+        {Object.entries(modal.data).map(([key, value]) => {
+          const config = getConfig(key)
+          return !config.hidden && <Descriptions.Item key={key} label={keyPrompt[key]?.label ?? key}>
             {renderValue(key, value)}
           </Descriptions.Item>
-        ))}
+        })}
         <Descriptions.Item>
           <Button
             style={{ width: 32, height: 22 }}
