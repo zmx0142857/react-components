@@ -1,31 +1,40 @@
 import './index.less'
-import formItems from '../FormItems'
-import type { ReactNode } from 'react'
-import { Any } from '@/utils/types'
+import renderItem from './item'
 import type { FormRule } from 'antd'
+import type { ReactNode } from 'react'
+import type { FormListOperation } from 'antd/lib'
+import { Any } from '@/utils/types'
 import { Button, ButtonProps, Form } from 'antd'
-import { forwardRef, useImperativeHandle } from 'react'
+import { NamePath } from 'antd/es/form/interface'
 import { filter } from '@/utils'
+import { forwardRef, useImperativeHandle } from 'react'
+import renderList from './list'
+import classNames from 'classnames'
 
-type ItemType = {
+export type RenderType = (item: ItemType) => ReactNode
+
+export type ItemType = {
   type: string
-  name: string
-  label: string
+  name: NamePath
+  key?: string
+  label?: string
+  showLabel?: boolean
+  showDeleteBtn?: boolean
   tooltip?: ReactNode
   rules?: FormRule[]
   initialValue?: Any
   required?: boolean
   itemProps?: object
+  render?: RenderType
+  validator?: (rule: FormRule, value: string) => Promise<void>
+  operator?: FormListOperation
 }
 
-interface BtnType extends ButtonProps {
-  title: string
-}
-
-type EditFormProps = {
+export type EditFormProps = {
+  className?: string
   name?: string
   items?: ItemType[]
-  btns?: BtnType[]
+  btns?: ButtonProps[]
   onFinish?: (values: object) => void
   onCancel?: () => void
 }
@@ -41,6 +50,7 @@ export type EditFormRef = ReturnType<typeof Form.useForm>[0]
  * @param props.onCancel 取消表单
  */
 const EditForm = forwardRef(({
+  className = '',
   name = 'default',
   items = [],
   btns,
@@ -51,49 +61,33 @@ const EditForm = forwardRef(({
   const [form] = Form.useForm()
   useImperativeHandle(ref, () => form)
 
-  const renderItem = (item: ItemType) => {
-    const { type, name, label, required, tooltip, rules, initialValue, itemProps, ...props } = item
-    const V = formItems[type]
-    if (!V) {
-      console.error('invalid component type', type)
-      return null
-    }
-    return (
-      <Form.Item key={name}
-        name={name}
-        label={label}
-        required={required}
-        initialValue={initialValue}
-        valuePropName={V.valuePropName}
-        tooltip={tooltip}
-        rules={required && !rules ? [{ required: true }] : rules}
-        {...itemProps}
-      >
-        <V.component {...props} />
-      </Form.Item>
-    )
-  }
-
-  const defaultBtn: BtnType[] = [
+  btns = btns || [
     { type: 'primary', htmlType: 'submit', title: '提交' },
     { onClick: onCancel, title: '取消' },
   ]
-  btns = btns || defaultBtn
 
   const onFormFinish = async (values: object) => {
     return onFinish?.(filter(values, v => v !== undefined))
   }
 
+  const render = (item: ItemType) => {
+    if (item.type.endsWith('*')) {
+      return renderList(item)
+    }
+    return renderItem(item)
+  }
+
   return (
     <Form
-      className="c-edit-form"
+      className={classNames('c-edit-form', className)}
       form={form}
       name={name}
-      labelCol={{ span: 6 }}
-      wrapperCol={{ span: 18 }}
+      labelWrap
+      labelCol={{ xs: { span: 24 }, sm: { span: 6 } }}
+      wrapperCol={{ xs: { span: 24 }, sm: { span: 18 } }}
       onFinish={onFormFinish}
     >
-      {items.map(renderItem)}
+      {items.map(render)}
       <div className="c-edit-form-footer">
         {btns.map((btn, index) =>
           <Button key={index} {...btn}>{btn.title}</Button>

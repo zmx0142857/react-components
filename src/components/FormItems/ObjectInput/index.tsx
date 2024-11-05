@@ -29,7 +29,7 @@ const ObjectInput: FC<ObjectInputProps> = ({
   className,
   style,
   keyPrompt = {},
-  column = 3,
+  column = 1,
   disabled,
   isArray = false,
   ...otherProps

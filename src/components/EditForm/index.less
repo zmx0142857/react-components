@@ -9,4 +9,27 @@
   .ant-picker, .ant-input-number {
     width: 100%;
   }
+  .ant-form-item-row {
+    justify-content: flex-end;
+  }
+  &-list {
+    &-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .ant-form-item {
+        flex: 1;
+      }
+    }
+    &-delete {
+      width: 30px;
+      height: 30px;
+      display: block;
+      line-height: 32px;
+      margin-bottom: 24px;
+    }
+    &-add {
+      width: calc(100% - 30px);
+    }
+  }
 }

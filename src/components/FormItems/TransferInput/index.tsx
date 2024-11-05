@@ -1,6 +1,6 @@
 import './index.less'
 import classnames from 'classnames'
-import type { FC, ReactNode } from 'react'
+import type { FC, Key, ReactNode } from 'react'
 import type { TransferDirection } from 'antd/es/transfer'
 import { Pagination, Spin, Transfer } from 'antd'
 import { useEffect, useMemo, useState } from 'react'
@@ -20,7 +20,7 @@ type TransferInputProps = {
   initialValue?: ValueType[]
   fetch?: FetchType<ValueType>
   onSearch?: (direction: TransferDirection, value: string) => void
-  onChange?: (targetItems: ValueType[], { targetKeys, direction, moveKeys }: { targetKeys: string[], direction: TransferDirection, moveKeys: string[] }) => void
+  onChange?: (targetItems: ValueType[], { targetKeys, direction, moveKeys }: { targetKeys: Key[], direction: TransferDirection, moveKeys: Key[] }) => void
   className?: string
   showSearch?: boolean
   footer?: TransferFooter
@@ -65,7 +65,7 @@ const TransferInput: FC<TransferInputProps> = ({
     }
   }
 
-  const onChange = (targetKeys: string[], direction: TransferDirection, moveKeys: string[]) => {
+  const onChange = (targetKeys: Key[], direction: TransferDirection, moveKeys: Key[]) => {
     let newItems
     if (direction === 'right') { // right, 增加
       newItems = [

@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { ChangeEvent, FC } from 'react'
 import { Button, Image, message } from 'antd'
-import { compressPicture, base64ToBlob } from '@/utils'
 import { PlusOutlined, CloseCircleFilled } from '@ant-design/icons'
 import './index.less'
 import classNames from 'classnames'
@@ -41,9 +40,10 @@ const ImageUpload: FC<ImageUploadProps> = ({ initialValue = [], value, onChange,
     if (!files || files.length === 0) return
     try {
       const newFiles = await Promise.all([...files].map(async file => {
-        const url = await compressPicture(file)
-        const blob = base64ToBlob(url)
-        return { id: uid++, url, file: blob }
+        // const url = await compressPicture(file)
+        // const blob = base64ToBlob(url)
+        const url = URL.createObjectURL(file)
+        return { id: uid++, url, file }
       }))
       const newFileList = [...fileList, ...newFiles]
       setFileList(newFileList)

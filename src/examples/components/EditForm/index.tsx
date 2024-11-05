@@ -1,13 +1,37 @@
 import { EditForm, type EditFormRef } from '@/components'
-import dayjs, { type Dayjs } from 'dayjs'
-import { fetchEquipments, fetchGradeOptions, hometownOptions } from './config'
+// import dayjs, { type Dayjs } from 'dayjs'
+// import { fetchEquipments, fetchGradeOptions, hometownOptions } from './config'
 import { useRef } from 'react'
+import { Typography } from 'antd'
+import { SmileOutlined } from '@ant-design/icons'
+
+const { Text } = Typography
 
 const EditFormExample = () => {
 
   const form = useRef<EditFormRef>()
 
+  const contactForm = [
+    {
+      label: '姓名',
+      name: 'name',
+      type: 'Input',
+      required: true,
+    },
+    {
+      label: '手机号',
+      name: 'phone',
+      type: 'Input',
+      required: true,
+      async validator(_: object, value: string) {
+        if (!value) throw new Error('请输入手机号')
+        if (!/^1[3-9]\d{9}$/.test(value)) throw new Error('手机号格式不正确')
+      },
+    },
+  ]
+
   const editForm = [
+    /*
     {
       label: '姓名',
       name: 'name',
@@ -114,6 +138,31 @@ const EditFormExample = () => {
       name: 'cron',
       type: 'Cron',
       initialValue: '* * * 1 * ?',
+    },
+    */
+    {
+      label: '自定义内容',
+      name: 'custom',
+      type: 'Custom',
+      children: (
+        <Text type="secondary">
+          ( 这是自定义内容 <SmileOutlined /> )
+        </Text>
+      )
+    },
+    {
+      label: '输入框列表',
+      name: 'inputList',
+      type: 'Input*',
+    },
+    {
+      label: '联系人',
+      name: 'contacts',
+      type: 'Card*',
+      items: contactForm,
+      initialValue: [
+        { name: '张三', phone: '13800138000' },
+      ]
     },
   ]
 
