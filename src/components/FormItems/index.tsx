@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import type { FC, ReactNode } from 'react'
+import type { FC } from 'react'
 import { Input, InputNumber, Checkbox, Switch, Slider, Button, Typography, Radio, DatePicker, TimePicker, Cascader, ColorPicker, TreeSelect } from 'antd'
 import ImageUpload from './ImageUpload'
 import SelectInput from './SelectInput'
@@ -40,7 +40,7 @@ const formItems: FormItems = {
   Object: { component: ObjectInput },
   ListSelect: { component: ListSelect },
   Cron: { component: CronInput },
-  Custom: { component: (props) => (props as { children: ReactNode }).children },
+  Custom: { component: () => null },
   Card: { component: () => null },
 }
 

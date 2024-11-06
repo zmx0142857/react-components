@@ -1,11 +1,37 @@
 import { EditForm, type EditFormRef } from '@/components'
-// import dayjs, { type Dayjs } from 'dayjs'
-// import { fetchEquipments, fetchGradeOptions, hometownOptions } from './config'
-import { useRef } from 'react'
-import { Typography } from 'antd'
+import dayjs, { type Dayjs } from 'dayjs'
+import { fetchEquipments, fetchGradeOptions, hometownOptions } from './config'
+import { FC, useEffect, useRef, useState } from 'react'
+import { Button, Space, Typography } from 'antd'
 import { SmileOutlined } from '@ant-design/icons'
 
 const { Text } = Typography
+
+type ClickCounterProps = {
+  value?: number
+  onChange?: (value: number) => void
+}
+const ClickCounter: FC<ClickCounterProps> = ({ value, onChange }) => {
+  const [count, setCount] = useState(0)
+
+  useEffect(() => {
+    if (value !== undefined) setCount(value)
+  }, [value])
+
+  const onClick = () => {
+    setCount(count + 1)
+    onChange?.(count + 1)
+  }
+
+  return (
+    <Space>
+      <Button type="primary" onClick={onClick} icon={<SmileOutlined />}>点我</Button>
+      <Text type="secondary">
+        ({count})
+      </Text>
+    </Space>
+  )
+}
 
 const EditFormExample = () => {
 
@@ -31,7 +57,6 @@ const EditFormExample = () => {
   ]
 
   const editForm = [
-    /*
     {
       label: '姓名',
       name: 'name',
@@ -139,16 +164,12 @@ const EditFormExample = () => {
       type: 'Cron',
       initialValue: '* * * 1 * ?',
     },
-    */
     {
       label: '自定义内容',
       name: 'custom',
       type: 'Custom',
-      children: (
-        <Text type="secondary">
-          ( 这是自定义内容 <SmileOutlined /> )
-        </Text>
-      )
+      render: () => <ClickCounter />,
+      initialValue: 10,
     },
     {
       label: '输入框列表',

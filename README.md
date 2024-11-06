@@ -41,14 +41,10 @@ const CronExample = () => {
 export default CronExample
 ```
 
+更多示例参见 `src/examples` 目录.
+
 ## Scripts
 
 - `pnpm dev`: 启动开发服务器
 - `pnpm build`: 编译示例网站页面, 输出到 `dist/`
 - `pnpm build:lib`: 编译组件库, 输出到 `lib/`
-
-<!--
-## Publish
-
-    $ npm publish --access public
--->
