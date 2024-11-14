@@ -1,37 +1,8 @@
 import { EditForm, type EditFormRef } from '@/components'
 import dayjs, { type Dayjs } from 'dayjs'
 import { fetchEquipments, fetchGradeOptions, hometownOptions } from './config'
-import { FC, useEffect, useRef, useState } from 'react'
-import { Button, Space, Typography } from 'antd'
-import { SmileOutlined } from '@ant-design/icons'
-
-const { Text } = Typography
-
-type ClickCounterProps = {
-  value?: number
-  onChange?: (value: number) => void
-}
-const ClickCounter: FC<ClickCounterProps> = ({ value, onChange }) => {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    if (value !== undefined) setCount(value)
-  }, [value])
-
-  const onClick = () => {
-    setCount(count + 1)
-    onChange?.(count + 1)
-  }
-
-  return (
-    <Space>
-      <Button type="primary" onClick={onClick} icon={<SmileOutlined />}>点我</Button>
-      <Text type="secondary">
-        ({count})
-      </Text>
-    </Space>
-  )
-}
+import { useRef } from 'react'
+import ClickCounter from './ClickCounter'
 
 const EditFormExample = () => {
 
@@ -185,7 +156,18 @@ const EditFormExample = () => {
         { name: '张三', phone: '13800138000' },
       ]
     },
-  ]
+    {
+      label: '另一些联系人',
+      name: 'anotherContacts',
+      type: 'Card*',
+      layout: 'inline',
+      showDeleteBtn: true,
+      items: contactForm,
+      initialValue: [
+        { name: '张三', phone: '13800138000' },
+      ]
+    },
+  ].filter(v => typeof v !== 'boolean')
 
   const onFinish = (values: object) => {
     console.log('onFinish', values)

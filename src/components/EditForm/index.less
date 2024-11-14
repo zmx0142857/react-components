@@ -15,7 +15,7 @@
   &-list {
     &-item {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
       .ant-form-item {
         flex: 1;
@@ -27,9 +27,34 @@
       display: block;
       line-height: 32px;
       margin-bottom: 24px;
+      text-align: center;
+      &.ant-typography {
+        color: inherit;
+        &:hover {
+          color: inherit;
+        }
+      }
     }
     &-add {
       width: calc(100% - 30px);
+    }
+  }
+  &-card-inline {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    .ant-form-item {
+      margin-bottom: 0;
+      &-label {
+        white-space: nowrap;
+        width: max-content;
+        max-width: max-content;
+      }
+    }
+    .ant-col-xs-24.ant-form-item-label {
+      padding: 0;
     }
   }
 }

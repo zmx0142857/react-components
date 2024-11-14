@@ -35,6 +35,7 @@ export type EditFormProps = {
   name?: string
   items?: ItemType[]
   btns?: ButtonProps[]
+  cols?: number[]
   onFinish?: (values: object) => void
   onCancel?: () => void
 }
@@ -46,6 +47,7 @@ export type EditFormRef = ReturnType<typeof Form.useForm>[0]
  * @param props.name 表单名称 (html 属性)
  * @param props.items 表单字段
  * @param props.btns 表单按钮
+ * @param props.cols 表单布局, 例如 [4, 20]
  * @param props.onFinish 提交表单
  * @param props.onCancel 取消表单
  */
@@ -54,6 +56,7 @@ const EditForm = forwardRef(({
   name = 'default',
   items = [],
   btns,
+  cols,
   onFinish,
   onCancel,
 }: EditFormProps, ref) => {
@@ -83,8 +86,8 @@ const EditForm = forwardRef(({
       form={form}
       name={name}
       labelWrap
-      labelCol={{ xs: { span: 24 }, sm: { span: 6 } }}
-      wrapperCol={{ xs: { span: 24 }, sm: { span: 18 } }}
+      labelCol={cols ? { span: cols[0] } : { xs: { span: 24 }, sm: { span: 6 } }}
+      wrapperCol={cols ? { span: cols[1] } : { xs: { span: 24 }, sm: { span: 18 } }}
       onFinish={onFormFinish}
     >
       {items.map(render)}

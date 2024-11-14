@@ -5,7 +5,22 @@ import renderItem from './item'
 import { FC } from 'react'
 
 const FormCard: FC<{ item: ItemType }> = ({ item }) => {
-  return (
+  const renderChildren = () => (item as ItemType & { items: ItemType[] }).items.map(v => renderItem({
+    itemProps: {
+      labelCol: { xs: { span: 24 }, sm: { span: 6 } },
+      wrapperCol: { xs: { span: 24 }, sm: { span: 18 } },
+    },
+    ...v,
+    key: v.name,
+    name: [item.name, v.name],
+  }))
+  const layout = (item as ItemType & { layout: string }).layout || 'card'
+
+  return layout === 'inline' ?  (
+    <div className="c-edit-form-card-inline">
+      {renderChildren()}
+    </div>
+  ) : (
     <Card title={item.label + (item.name + 1)}
       extra={
         <Space>
@@ -15,15 +30,7 @@ const FormCard: FC<{ item: ItemType }> = ({ item }) => {
         </Space>
       }
     >
-      {(item as ItemType & { items: ItemType[] }).items.map(v => renderItem({
-        ...v,
-        key: v.name,
-        name: [item.name, v.name],
-        itemProps: {
-          labelCol: { xs: { span: 24 }, sm: { span: 6 } },
-          wrapperCol: { xs: { span: 24 }, sm: { span: 18 } },
-        }
-      }))}
+      {renderChildren()}
     </Card>
   )
 }
