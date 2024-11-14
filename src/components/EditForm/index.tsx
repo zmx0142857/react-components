@@ -31,8 +31,8 @@ export type ItemType = {
 }
 
 export type EditFormProps = {
+  id: string
   className?: string
-  name?: string
   items?: ItemType[]
   btns?: ButtonProps[]
   cols?: number[]
@@ -44,7 +44,8 @@ export type EditFormRef = ReturnType<typeof Form.useForm>[0]
 
 /**
  * 编辑表单
- * @param props.name 表单名称 (html 属性)
+ * @param props.id
+ * @param props.className
  * @param props.items 表单字段
  * @param props.btns 表单按钮
  * @param props.cols 表单布局, 例如 [4, 20]
@@ -52,8 +53,8 @@ export type EditFormRef = ReturnType<typeof Form.useForm>[0]
  * @param props.onCancel 取消表单
  */
 const EditForm = forwardRef(({
+  id,
   className = '',
-  name = 'default',
   items = [],
   btns,
   cols,
@@ -84,7 +85,7 @@ const EditForm = forwardRef(({
     <Form
       className={classNames('c-edit-form', className)}
       form={form}
-      name={name}
+      name={id}
       labelWrap
       labelCol={cols ? { span: cols[0] } : { xs: { span: 24 }, sm: { span: 6 } }}
       wrapperCol={cols ? { span: cols[1] } : { xs: { span: 24 }, sm: { span: 18 } }}

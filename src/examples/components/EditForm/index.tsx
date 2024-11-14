@@ -181,7 +181,7 @@ const EditFormExample = () => {
   return (
     <EditForm
       ref={form}
-      name="my-form"
+      id="my-form"
       items={editForm}
       onFinish={onFinish}
       onCancel={onCancel}

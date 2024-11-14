@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { Radio, Checkbox, Row, Col, InputNumber, RadioChangeEvent } from 'antd'
 import useLanguage from '../useLanguage'
-import type { CheckboxValueType } from 'antd/es/checkbox/Group'
 import { type CronField, FieldType, Parser, cronRegex, Keys } from '../parser'
+import { Any } from '@/utils/types'
 
 export type PaneProps = {
   value: string
@@ -61,7 +61,7 @@ function Pane ({ value, onChange, Parser }: PaneProps) {
     })
   }
 
-  const onChangeAssign = (v: CheckboxValueType[]) => {
+  const onChangeAssign = (v: Any[]) => {
     triggerChange({
       assign: v.length !== 0 ? v.map(x => String(x)) : parser.current.default().assign
     })
