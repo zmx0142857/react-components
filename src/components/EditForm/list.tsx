@@ -1,10 +1,8 @@
-import { Button, Form, Typography } from 'antd'
+import { Button, Form } from 'antd'
 import type { ItemType } from '.'
 import renderItem from './item'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { Any } from '@/utils/types'
-
-const { Link } = Typography
 
 const renderList = (item: ItemType) => {
   const showDeleteBtn = item.showDeleteBtn === undefined ? item.type !== 'Card*' : item.showDeleteBtn
@@ -28,9 +26,12 @@ const renderList = (item: ItemType) => {
                 operator,
               })}
               {showDeleteBtn ?
-                <Link className="c-edit-form-list-delete" onClick={() => operator.remove(name)}>
-                  <MinusCircleOutlined />
-                </Link>
+                <MinusCircleOutlined
+                  className="c-edit-form-list-delete"
+                  onClick={() => operator.remove(name)}
+                  role="button"
+                  title="删除"
+                />
               : <div className="c-edit-form-list-delete" />
               }
               </div>
