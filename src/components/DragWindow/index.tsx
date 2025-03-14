@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import type { FC, MutableRefObject, ReactNode } from 'react';
 import { CloseOutlined } from '@ant-design/icons';
 import classnames from 'classnames';
@@ -18,6 +18,16 @@ type DragWindowProps = {
  */
 const DragWindow: FC<DragWindowProps> = ({ className, title, children, container, onClose }) => {
   const ref = useRef<HTMLDivElement>(null);
+
+  // 禁用移动端滚动
+  useEffect(() => {
+    const preventDefault = (e: TouchEvent) => e.preventDefault();
+    document.addEventListener('touchmove', preventDefault, { passive: false });
+    return () => {
+      document.removeEventListener('touchmove', preventDefault);
+    }
+  }, []);
+
   const onMouseDown = (e: React.MouseEvent) => {
     if (!ref.current) return
     const c = container?.current || document.body;
@@ -33,15 +43,16 @@ const DragWindow: FC<DragWindowProps> = ({ className, title, children, container
       ref.current.style.top = between(offsetTop + dy, 0, maxY) + 'px';
     }
     const onMouseUp = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('pointermove', onMouseMove);
+      document.removeEventListener('pointerup', onMouseUp);
     }
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('pointermove', onMouseMove);
+    document.addEventListener('pointerup', onMouseUp);
   }
+
   return (
     <div className={classnames('c-drag-window', className)} ref={ref}>
-      <div className="c-drag-window-header" onMouseDown={onMouseDown}>
+      <div className="c-drag-window-header" onPointerDown={onMouseDown}>
         {title}
         <CloseOutlined className="c-drag-window-close" onClick={onClose} />
       </div>
