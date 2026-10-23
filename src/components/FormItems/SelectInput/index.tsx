@@ -1,26 +1,56 @@
-import { useEffect, type FC } from 'react'
+import { useEffect, useRef, useState, type FC, type ReactNode } from 'react'
 import type { FetchType } from '@/utils/types'
-import { Divider, Pagination, Select, Space, Spin } from 'antd'
+import { Divider, Pagination, Select, Space, Spin, type SelectProps } from 'antd'
 import usePager from '@/hooks/usePager'
 
-type SelectInputProps = {
-  fetch?: FetchType
-  value?: string
+type OptionType = {
+  value?: string | number
+  label?: ReactNode
 }
 
-const SelectInput: FC<SelectInputProps> = ({ fetch, ...props }) => {
-  const pager = usePager(fetch, {
+type SelectInputProps = Omit<SelectProps, 'options'> & {
+  fetch?: FetchType<OptionType>
+  options?: SelectProps['options']
+  selectFirst?: boolean
+}
+
+const isEmpty = (value: unknown) => value === undefined || value === null || value === ''
+
+const SelectInput: FC<SelectInputProps> = ({
+  fetch, // 传入 fetch 函数时, Select 组件具有请求 api 的搜索能力
+  selectFirst = false, // 默认选中第一项
+  value,
+  defaultValue,
+  options,
+  onChange,
+  ...props
+}) => {
+  const pager = usePager<OptionType>(fetch, {
     debounce: 500,
     size: 8,
   })
+  const [_value, setValue] = useState(defaultValue)
+  const selectedFirst = useRef(false)
 
   useEffect(() => {
     if (fetch) {
       // 组件首次加载时, 用 value 请求一次接口, 用于回显 label. 后续请求 (onSearch) 都是用 label 而不是 value
-      pager.onSearch({ value: props.value })
+      pager.onSearch({ value: value as string })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // 默认选中第一项
+  useEffect(() => {
+    if (!isEmpty(value)) selectedFirst.current = true
+    if (!selectFirst || selectedFirst.current) return
+    const first = fetch ? pager.data[0] : options?.[0]
+    if (!first) return
+    selectedFirst.current = true
+    setValue(first.value)
+    onChange?.(first.value, first)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectFirst, pager.data, options, value])
 
   // TODO: '在输入框中输入一些文本后, 点击页面空白处, 输入框被清空, 也会触发 onSearch. 如何避免这个不必要的请求?'
   const onSearch = (label: string) => {
@@ -29,7 +59,13 @@ const SelectInput: FC<SelectInputProps> = ({ fetch, ...props }) => {
     }
   }
 
-  // 传入 fetch 函数时, Select 组件具有请求 api 的搜索能力
+  const onSelectChange: SelectProps['onChange'] = (value, option) => {
+    setValue(value)
+    onChange?.(value, option)
+  }
+
+  const selectValue = value ?? _value
+
   return fetch ? (
     <Select
       showSearch
@@ -37,8 +73,10 @@ const SelectInput: FC<SelectInputProps> = ({ fetch, ...props }) => {
       onSearch={onSearch}
       onFocus={() => onSearch('')}
       options={pager.data}
+      value={selectValue}
       loading={pager.loading}
-      dropdownRender={(menu) => (
+      onChange={onSelectChange}
+      popupRender={(menu) => (
         <>
           <Spin spinning={pager.loading}>
             {menu}
@@ -57,7 +95,14 @@ const SelectInput: FC<SelectInputProps> = ({ fetch, ...props }) => {
       )}
       {...props}
     />
-  ) : <Select {...props} />
+  ) : (
+    <Select
+      options={options}
+      value={selectValue}
+      onChange={onSelectChange}
+      {...props}
+    />
+  )
 }
 
 export default SelectInput

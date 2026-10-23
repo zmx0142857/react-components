@@ -9,6 +9,7 @@ const ImageUploadExample = lazy(() => import('./ImageUpload'))
 const EditFormExample = lazy(() => import('./EditForm'))
 const ObjectEditorExample = lazy(() => import('./ObjectEditor'))
 const LogDataExample = lazy(() => import('./LogData'))
+const SelectInputExample = lazy(() => import('./SelectInput'))
 
 const examples = [
   {
@@ -42,7 +43,11 @@ const examples = [
   {
     path: 'LogData',
     element: <LogDataExample />,
-  }
+  },
+  {
+    path: 'SelectInput',
+    element: <SelectInputExample />,
+  },
 ]
 
 export default examples
